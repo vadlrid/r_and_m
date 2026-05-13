@@ -1,0 +1,17 @@
+.character-info {
+  /** todo: Пока нет общей вёрстки карточки персонажа, добавим явный отступ. Не забыть убрать! **/
+  padding-top: 4.2rem;
+}
+
+.character-info button.back {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 0.8rem;
+}
+
+.character-info .indicator {
+  margin: 0 auto;
+}
