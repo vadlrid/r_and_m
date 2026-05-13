@@ -1,6 +1,6 @@
-import './CharactersList.css';
 import { useNavigate } from 'react-router';
 import { Indicator } from '@components/indicator';
+import './CharactersList.css';
 
 export const CharactersList = () => {
   const navigate = useNavigate();
