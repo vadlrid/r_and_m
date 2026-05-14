@@ -34,6 +34,12 @@
   height: 0.2rem;
 }
 
+.select
+  > .select__selection
+  > .select__selection__caret.select__selection__caret_down {
+  transform: rotate(180deg);
+}
+
 .select.select_large > .select__selection {
   height: 5.5rem;
   padding-left: 1.3rem;

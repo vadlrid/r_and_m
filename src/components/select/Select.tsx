@@ -1,6 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { CaretDown, CaretUp } from '@components/icons';
+import { Caret } from '@components/icons';
+import { useOutsideClick } from '@shared/hooks';
 import { type KeyValue, Size } from '@shared/types';
 import {
   DefaultSelectOption,
@@ -27,13 +28,16 @@ export const Select = <T extends string | number>({
 }: ISelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const size = useMemo(() => sizeParam ?? Size.LARGE, [sizeParam]);
+  const size = sizeParam ?? Size.LARGE;
   const OptionComponent = useMemo(
     () => optionComponentParam ?? DefaultSelectOption<T>,
     [optionComponentParam]
   );
 
-  const toggleOpen = () => setIsOpen(!isOpen);
+  const selectContainerRef = useRef<HTMLDivElement>(null);
+  useOutsideClick(selectContainerRef, () => setIsOpen(false));
+
+  const toggleOpen = () => setIsOpen((value) => !value);
 
   const handleSelect = useCallback(
     (item: KeyValue<T>) => {
@@ -63,6 +67,7 @@ export const Select = <T extends string | number>({
 
   return (
     <div
+      ref={selectContainerRef}
       className={classNames(
         'select',
         { select_opened: isOpen },
@@ -75,11 +80,11 @@ export const Select = <T extends string | number>({
         ) : (
           <div>{placeholder}</div>
         )}
-        {isOpen ? (
-          <CaretUp className='select__selection__caret' />
-        ) : (
-          <CaretDown className='select__selection__caret' />
-        )}
+        <Caret
+          className={classNames('select__selection__caret', {
+            select__selection__caret_down: !isOpen
+          })}
+        />
       </div>
       {isOpen && <div className='select__options'>{optionList}</div>}
     </div>
