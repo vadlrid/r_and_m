@@ -20,6 +20,12 @@ enum Status {
   UNKNOWN
 }
 
+const STATUS_COLORS: Record<Status, string> = {
+  [Status.ALIVE]: 'green',
+  [Status.DEAD]: 'red',
+  [Status.UNKNOWN]: 'orange'
+};
+
 const STATUS_LIST: KeyValue<Status>[] = [
   { key: Status.ALIVE, value: 'Alive' },
   { key: Status.DEAD, value: 'Dead' },
@@ -27,23 +33,16 @@ const STATUS_LIST: KeyValue<Status>[] = [
 ];
 
 const StatusOption = ({ data }: ISelectOptionProps<Status>) => {
-  let circleColor: string;
-  switch (data.key) {
-    case Status.ALIVE:
-      circleColor = 'status-option__circle_green';
-      break;
-    case Status.DEAD:
-      circleColor = 'status-option__circle_red';
-      break;
-    case Status.UNKNOWN:
-      circleColor = 'status-option__circle_orange';
-      break;
-  }
-
+  const circleColor = STATUS_COLORS[data.key];
   return (
     <div className='status-option'>
       <span>{data.value}</span>
-      <div className={classNames('status-option__circle', circleColor)}></div>
+      <div
+        className={classNames(
+          'status-option__circle',
+          `status-option__circle_${circleColor}`
+        )}
+      ></div>
     </div>
   );
 };
@@ -64,14 +63,14 @@ export const SelectExample = () => {
         items={SPECIES}
         placeholder='Species'
         selectedItem={specie}
-        selectedItemChange={setSpecie}
+        onSelectedItemChange={setSpecie}
       />
       <Select
         size={Size.SMALL}
         items={STATUS_LIST}
         placeholder='Status'
         selectedItem={status}
-        selectedItemChange={setStatus}
+        onSelectedItemChange={setStatus}
         optionComponent={StatusOption}
       />
     </section>

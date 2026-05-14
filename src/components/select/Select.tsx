@@ -14,7 +14,7 @@ interface ISelectProps<T extends string | number> {
   items?: KeyValue<T>[];
   placeholder?: string;
   selectedItem?: T;
-  selectedItemChange?: (value: T) => void;
+  onSelectedItemChange?: (value: T) => void;
   optionComponent?: React.FC<ISelectOptionProps<T>>;
 }
 
@@ -23,7 +23,7 @@ export const Select = <T extends string | number>({
   items,
   placeholder,
   selectedItem,
-  selectedItemChange,
+  onSelectedItemChange,
   optionComponent: optionComponentParam
 }: ISelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,10 +41,10 @@ export const Select = <T extends string | number>({
 
   const handleSelect = useCallback(
     (item: KeyValue<T>) => {
-      selectedItemChange?.(item.key);
+      onSelectedItemChange?.(item.key);
       setIsOpen(false);
     },
-    [setIsOpen, selectedItemChange]
+    [setIsOpen, onSelectedItemChange]
   );
 
   const optionList = useMemo(() => {
