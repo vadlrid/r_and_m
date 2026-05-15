@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import classNames from 'classnames';
 import { Caret } from '@components/icons';
 import { useOutsideClick } from '@shared/hooks';
 import { type KeyValue, Size } from '@shared/types';
+import { classNames } from '@shared/utils';
 import {
   DefaultSelectOption,
   type ISelectOptionProps

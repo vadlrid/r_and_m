@@ -1,4 +1,4 @@
-.select-example {
+.controls-example {
   display: grid;
   grid-template-columns: auto auto;
   row-gap: 1rem;
@@ -7,7 +7,12 @@
   margin: 0 auto;
 }
 
-.select-example > strong {
+.controls-example > .spacer {
+  grid-column: 1 / 3;
+  height: 1rem;
+}
+
+.controls-example > strong {
   font-size: 1.6rem;
 }
 

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { ArrowBack } from '@components/icons';
 import { Indicator } from '@components/indicator';
 import { Size } from '@shared/types';
-import { SelectExample } from '../select-example/SelectExample.tsx';
+import { ControlsExample } from '../controls-example/ControlsExample.tsx';
 import './CharacterInfo.css';
 
 export const CharacterInfo = () => {
@@ -18,7 +18,7 @@ export const CharacterInfo = () => {
         {/*todo: Индикатор добавлен для примера. Не забыть убрать*/}
         <Indicator size={Size.SMALL} />
         {/*todo: Страница с селектами для примера. Убрать*/}
-        <SelectExample />
+        <ControlsExample />
       </section>
     </>
   );
