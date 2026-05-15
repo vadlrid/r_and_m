@@ -21,7 +21,8 @@
     "erasableSyntaxOnly": false,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@shared/*": ["./src/shared/*"]
     }
   },
   "include": ["src"]

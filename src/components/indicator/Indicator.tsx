@@ -1,23 +1,23 @@
-import './Indicator.css';
-import { IndicatorSize } from './indicator-size.enum.ts';
 import classNames from 'classnames';
+import { Size } from '@shared/types';
+import './Indicator.css';
 
 interface IIndicatorProps {
-  size?: IndicatorSize;
+  size?: Size;
   title?: string;
 }
 
 export const Indicator = ({ size, title }: IIndicatorProps) => {
-  size = size ?? IndicatorSize.LARGE;
+  size = size ?? Size.LARGE;
   return (
     <>
       <div
         className={classNames('indicator', {
-          'is-large': size === IndicatorSize.LARGE
+          indicator_large: size === Size.LARGE
         })}
       >
-        <div className='portal'></div>
-        {!!title && <h3>{title}</h3>}
+        <div className='indicator__portal'></div>
+        {!!title && <h3 className='indicator__title'>{title}</h3>}
       </div>
     </>
   );

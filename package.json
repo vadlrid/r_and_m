@@ -35,7 +35,8 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.10",
-    "vite-plugin-svgr": "^5.2.0"
+    "vite-plugin-svgr": "^5.2.0",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md}": [

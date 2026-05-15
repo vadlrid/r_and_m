@@ -1,7 +1,9 @@
-import './CharacterInfo.css';
-import { ArrowBack } from '@components/icons';
 import { useNavigate } from 'react-router';
-import { Indicator, IndicatorSize } from '@components/indicator';
+import { ArrowBack } from '@components/icons';
+import { Indicator } from '@components/indicator';
+import { Size } from '@shared/types';
+import { SelectExample } from '../select-example/SelectExample.tsx';
+import './CharacterInfo.css';
 
 export const CharacterInfo = () => {
   const navigate = useNavigate();
@@ -14,7 +16,9 @@ export const CharacterInfo = () => {
           <h3>GO BACK</h3>
         </button>
         {/*todo: Индикатор добавлен для примера. Не забыть убрать*/}
-        <Indicator size={IndicatorSize.SMALL} />
+        <Indicator size={Size.SMALL} />
+        {/*todo: Страница с селектами для примера. Убрать*/}
+        <SelectExample />
       </section>
     </>
   );
