@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { ArrowBack } from '@components/icons';
 import { Indicator } from '@components/indicator';
 import { Size } from '@shared/types';
-import { ControlsExample } from '../controls-example/ControlsExample.tsx';
+import { ControlsExample } from '../controlsExample/ControlsExample.tsx';
 import './CharacterInfo.css';
 
 export const CharacterInfo = () => {

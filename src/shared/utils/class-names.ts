@@ -1,9 +1,6 @@
-type Value = string;
-type ValueMap = Record<string, boolean | undefined>;
-type ParameterArray = Parameter[];
-type Parameter = Value | ValueMap | ParameterArray;
+type Parameter = string | Record<string, boolean | undefined> | Parameter[];
 
-export function classNames(...params: ParameterArray): string {
+export function classNames(...params: Parameter[]): string {
   const classes: string[] = [];
 
   while (params.length) {

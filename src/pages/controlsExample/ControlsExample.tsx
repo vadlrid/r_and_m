@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Search } from '@components/icons';
-import { InputField } from '@components/input-field';
 import { type ISelectOptionProps, Select } from '@components/select';
 import { type KeyValue, Size } from '@shared/types';
 import { classNames } from '@shared/utils';
+import { InputField } from '../../components/inputField';
 import './ControlsExample.css';
 
 // todo: Временный компонент для примера и отладки различных контролов
@@ -65,26 +65,26 @@ export const ControlsExample = () => {
         items={SPECIES}
         placeholder='Species'
         selectedItem={specie}
-        onSelectedItemChange={setSpecie}
+        onChange={setSpecie}
       />
       <Select
         size={Size.SMALL}
         items={STATUS_LIST}
         placeholder='Status'
         selectedItem={status}
-        onSelectedItemChange={setStatus}
-        optionComponent={StatusOption}
+        onChange={setStatus}
+        OptionComponent={StatusOption}
       />
       <div className='spacer' />
       <strong>Form Field</strong>
       <strong>Filter Field</strong>
-      <InputField value={character} onValueChange={setCharacter} />
+      <InputField value={character} onChange={setCharacter} />
       <InputField
         placeholder='Filter by name...'
         value={filter}
-        onValueChange={setFilter}
-        hasBorder={true}
-        prefixComponent={Search}
+        onChange={setFilter}
+        hasBorder
+        Prefix={Search}
       />
       <div className='spacer' />
       <strong>Form Field Small</strong>
@@ -92,16 +92,16 @@ export const ControlsExample = () => {
       <InputField
         size={Size.SMALL}
         value={character}
-        onValueChange={setCharacter}
-        isDisabled={true}
+        onChange={setCharacter}
+        isDisabled
       />
       <InputField
         size={Size.SMALL}
         placeholder='Filter...'
         value={filter}
-        onValueChange={setFilter}
-        hasBorder={true}
-        prefixComponent={Search}
+        onChange={setFilter}
+        hasBorder
+        Prefix={Search}
       />
     </section>
   );

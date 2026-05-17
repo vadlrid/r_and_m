@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useCallback } from 'react';
 import { Close } from '@components/icons';
 import { Size } from '@shared/types';
 import { classNames } from '@shared/utils';
@@ -6,25 +7,29 @@ import './InputField.css';
 
 interface InputFieldProps {
   value?: string;
-  onValueChange?: (value: string) => void;
+  onChange?: (value: string) => void;
   isDisabled?: boolean;
   placeholder?: string;
-  prefixComponent?: React.FC;
+  Prefix?: React.FC;
   size?: Size;
   hasBorder?: boolean;
 }
 
 export const InputField = ({
   value,
-  onValueChange,
+  onChange,
   isDisabled,
   placeholder,
-  prefixComponent,
-  size,
+  Prefix,
+  size = Size.LARGE,
   hasBorder
 }: InputFieldProps) => {
-  const Prefix = prefixComponent;
-  size = size ?? Size.LARGE;
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) =>
+      onChange?.(event.target.value),
+    [onChange]
+  );
+  const handleClear = useCallback(() => onChange?.(''), [onChange]);
 
   return (
     <div
@@ -43,7 +48,7 @@ export const InputField = ({
         className='input-field__value'
         placeholder={placeholder}
         value={value}
-        onChange={(event) => onValueChange?.(event.target.value)}
+        onChange={handleChange}
         disabled={isDisabled}
       />
       {!!value && (
@@ -51,7 +56,7 @@ export const InputField = ({
           type='button'
           className='input-field__clear'
           disabled={isDisabled}
-          onClick={() => onValueChange?.('')}
+          onClick={handleClear}
         >
           <Close />
         </button>
