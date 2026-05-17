@@ -3,7 +3,7 @@ import { ArrowBack } from '@components/icons';
 import { Indicator } from '@components/indicator';
 import { Size } from '@shared/types';
 import { ControlsExample } from '../controlsExample/ControlsExample.tsx';
-import './CharacterInfo.css';
+import './CharacterInfo.scss';
 
 export const CharacterInfo = () => {
   const navigate = useNavigate();

@@ -7,7 +7,7 @@ import {
   DefaultSelectOption,
   type ISelectOptionProps
 } from './SelectOption.tsx';
-import './Select.css';
+import './Select.scss';
 
 interface ISelectProps<T extends string | number> {
   size?: Size;

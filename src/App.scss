@@ -1,0 +1,25 @@
+#root {
+  & > main {
+    width: auto;
+    min-height: calc(100vh - 13rem);
+    background: var(--temp-bg);
+    padding-bottom: 1rem;
+  }
+
+  & > nav,
+  & > footer {
+    width: auto;
+    height: 6rem;
+  }
+
+  & > nav {
+    display: flex;
+    align-items: center;
+  }
+
+  & > footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -4,7 +4,7 @@ import { type ISelectOptionProps, Select } from '@components/select';
 import { type KeyValue, Size } from '@shared/types';
 import { classNames } from '@shared/utils';
 import { InputField } from '../../components/inputField';
-import './ControlsExample.css';
+import './ControlsExample.scss';
 
 // todo: Временный компонент для примера и отладки различных контролов
 

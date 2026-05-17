@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { Close } from '@components/icons';
 import { Size } from '@shared/types';
 import { classNames } from '@shared/utils';
-import './InputField.css';
+import './InputField.scss';
 
 interface InputFieldProps {
   value?: string;

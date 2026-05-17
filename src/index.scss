@@ -1,3 +1,5 @@
+@import 'reset.css';
+
 :root {
   /** todo: временный цвет фона для контраста. Удалить **/
   --temp-bg: #e1ffc2;
@@ -10,7 +12,7 @@
   --color-input-field-border: rgb(0 0 0 / 50%);
   --color-status-green: #12b800;
   --color-status-red: #df0000;
-  --color-status-orange: #ff9900;
+  --color-status-orange: #f90;
 }
 
 html {
