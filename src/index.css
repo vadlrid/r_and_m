@@ -6,6 +6,8 @@
   --color-white: #fff;
   --color-highlight: #d0f5ff;
   --color-selection: #d0efff;
+  --color-input-field-underline: #000;
+  --color-input-field-border: rgb(0 0 0 / 50%);
   --color-status-green: #12b800;
   --color-status-red: #df0000;
   --color-status-orange: #ff9900;

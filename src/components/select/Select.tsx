@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
-import classNames from 'classnames';
 import { Caret } from '@components/icons';
 import { useOutsideClick } from '@shared/hooks';
 import { type KeyValue, Size } from '@shared/types';
+import { classNames } from '@shared/utils';
 import {
   DefaultSelectOption,
   type ISelectOptionProps
@@ -14,25 +14,19 @@ interface ISelectProps<T extends string | number> {
   items?: KeyValue<T>[];
   placeholder?: string;
   selectedItem?: T;
-  onSelectedItemChange?: (value: T) => void;
-  optionComponent?: React.FC<ISelectOptionProps<T>>;
+  onChange?: (value: T) => void;
+  OptionComponent?: React.FC<ISelectOptionProps<T>>;
 }
 
 export const Select = <T extends string | number>({
-  size: sizeParam,
+  size = Size.LARGE,
   items,
   placeholder,
   selectedItem,
-  onSelectedItemChange,
-  optionComponent: optionComponentParam
+  onChange,
+  OptionComponent = DefaultSelectOption<T>
 }: ISelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const size = sizeParam ?? Size.LARGE;
-  const OptionComponent = useMemo(
-    () => optionComponentParam ?? DefaultSelectOption<T>,
-    [optionComponentParam]
-  );
 
   const selectContainerRef = useRef<HTMLDivElement>(null);
   useOutsideClick(selectContainerRef, () => setIsOpen(false));
@@ -41,10 +35,10 @@ export const Select = <T extends string | number>({
 
   const handleSelect = useCallback(
     (item: KeyValue<T>) => {
-      onSelectedItemChange?.(item.key);
+      onChange?.(item.key);
       setIsOpen(false);
     },
-    [setIsOpen, onSelectedItemChange]
+    [setIsOpen, onChange]
   );
 
   const optionList = useMemo(() => {

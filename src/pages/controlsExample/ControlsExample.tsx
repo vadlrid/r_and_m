@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
-import classNames from 'classnames';
+import { useState } from 'react';
+import { Search } from '@components/icons';
 import { type ISelectOptionProps, Select } from '@components/select';
 import { type KeyValue, Size } from '@shared/types';
-import './SelectExample.css';
+import { classNames } from '@shared/utils';
+import { InputField } from '../../components/inputField';
+import './ControlsExample.css';
 
-// todo: Временный компонент для примера select'ов
+// todo: Временный компонент для примера и отладки различных контролов
 
 const SPECIES: KeyValue<string>[] = [
   { key: 'human', value: 'Human' },
@@ -47,15 +49,15 @@ const StatusOption = ({ data }: ISelectOptionProps<Status>) => {
   );
 };
 
-export const SelectExample = () => {
+export const ControlsExample = () => {
   const [specie, setSpecie] = useState<string | undefined>(undefined);
   const [status, setStatus] = useState<Status | undefined>(undefined);
 
-  useEffect(() => console.log('SPECIE CHANGED', specie), [specie]);
-  useEffect(() => console.log('STATUS CHANGED', status), [status]);
+  const [character, setCharacter] = useState<string>('Rick Sanchez');
+  const [filter, setFilter] = useState<string>('');
 
   return (
-    <section className='select-example'>
+    <section className='controls-example'>
       <strong>Large</strong>
       <strong>Small</strong>
       <Select
@@ -63,15 +65,43 @@ export const SelectExample = () => {
         items={SPECIES}
         placeholder='Species'
         selectedItem={specie}
-        onSelectedItemChange={setSpecie}
+        onChange={setSpecie}
       />
       <Select
         size={Size.SMALL}
         items={STATUS_LIST}
         placeholder='Status'
         selectedItem={status}
-        onSelectedItemChange={setStatus}
-        optionComponent={StatusOption}
+        onChange={setStatus}
+        OptionComponent={StatusOption}
+      />
+      <div className='spacer' />
+      <strong>Form Field</strong>
+      <strong>Filter Field</strong>
+      <InputField value={character} onChange={setCharacter} />
+      <InputField
+        placeholder='Filter by name...'
+        value={filter}
+        onChange={setFilter}
+        hasBorder
+        Prefix={Search}
+      />
+      <div className='spacer' />
+      <strong>Form Field Small</strong>
+      <strong>Filter Field Small</strong>
+      <InputField
+        size={Size.SMALL}
+        value={character}
+        onChange={setCharacter}
+        isDisabled
+      />
+      <InputField
+        size={Size.SMALL}
+        placeholder='Filter...'
+        value={filter}
+        onChange={setFilter}
+        hasBorder
+        Prefix={Search}
       />
     </section>
   );

@@ -4,8 +4,8 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { App } from './App.tsx';
 import './index.css';
-import { CharacterInfo } from './pages/character-info';
-import { CharactersList } from './pages/character-list';
+import { CharacterInfo } from './pages/characterInfo';
+import { CharactersList } from './pages/characterList';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
