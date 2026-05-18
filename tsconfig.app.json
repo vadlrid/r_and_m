@@ -22,6 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "paths": {
       "@components/*": ["./src/components/*"],
+      "@widgets/*": ["./src/widgets/*"],
       "@shared/*": ["./src/shared/*"]
     }
   },

@@ -1,0 +1,17 @@
+.status-circle {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100%;
+
+  $main: &;
+
+  &#{$main}_green {
+    background-color: var(--color-status-green);
+  }
+  &#{$main}_red {
+    background-color: var(--color-status-red);
+  }
+  &#{$main}_orange {
+    background-color: var(--color-status-orange);
+  }
+}

@@ -18,9 +18,11 @@
     background: none;
     outline: none;
     font-size: 1.4rem;
+    font-family: inherit;
     line-height: 2.1rem;
     font-weight: 400;
     padding-left: 0.6rem;
+    color: var(--color-text-inactive);
   }
 
   #{$main}__clear {
@@ -45,6 +47,7 @@
       line-height: 3rem;
       font-weight: 500;
       padding: 0;
+      color: var(--color-input-text);
     }
   }
 
@@ -85,6 +88,13 @@
     #{$main}__clear svg {
       width: var(--large-icon-size);
       height: var(--large-icon-size);
+    }
+  }
+
+  &#{$main}_invalid {
+    border-color: var(--color-error);
+    #{$main}__value {
+      color: var(--color-error);
     }
   }
 }

@@ -13,8 +13,9 @@
     "react",
     "react-dom",
     "react-router",
-    "classnames",
+    "formik",
     "^@components/(.*)$",
+    "^@widgets/(.*)$",
     "^@shared/(.*)$",
     "^./(.*)\\.tsx$",
     "^[./]"

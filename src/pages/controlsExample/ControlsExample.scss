@@ -18,23 +18,5 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
-
-    $option: '.status-option';
-
-    & > #{$option}__circle {
-      width: 1rem;
-      height: 1rem;
-      border-radius: 100%;
-
-      &#{$option}__circle_green {
-        background-color: var(--color-status-green);
-      }
-      &#{$option}__circle_red {
-        background-color: var(--color-status-red);
-      }
-      &#{$option}__circle_orange {
-        background-color: var(--color-status-orange);
-      }
-    }
   }
 }

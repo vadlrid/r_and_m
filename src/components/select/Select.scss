@@ -57,6 +57,7 @@
     border: 0.1rem solid var(--color-border);
     border-radius: var(--select-border-radius);
     position: absolute;
+    z-index: 1;
     width: 100%;
     margin-top: 0.7rem;
     display: flex;
@@ -105,5 +106,10 @@
       height: 4rem;
       margin: 0;
     }
+  }
+
+  &#{$main}_invalid > #{$main}__selection {
+    color: var(--color-error);
+    border-color: var(--color-error);
   }
 }

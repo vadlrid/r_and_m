@@ -1,5 +1,9 @@
 .characters-list {
   padding-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 
   .img-title {
     width: min(60rem, 100%);
