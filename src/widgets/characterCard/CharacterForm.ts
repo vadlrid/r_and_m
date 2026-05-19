@@ -1,12 +1,27 @@
 import { useCallback } from 'react';
-import { type FormikErrors, useFormik } from 'formik';
-import { type Character, Gender, Species, Status } from '@shared/domain';
-
-type CharacterFormValues = Partial<
-  Pick<Character, 'name' | 'status' | 'species' | 'gender' | 'location'>
->;
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import {
+  ALL_GENDER_VALUES,
+  ALL_SPECIES_VALUES,
+  ALL_STATUS_VALUES,
+  type Character,
+  Gender,
+  Species,
+  Status
+} from '@shared/domain';
 
 export type CharacterForm = ReturnType<typeof useCharacterForm>;
+
+const characterFormValidationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  status: Yup.mixed<Status>().oneOf(ALL_STATUS_VALUES),
+  species: Yup.mixed<Species>().oneOf(ALL_SPECIES_VALUES),
+  gender: Yup.mixed<Gender>().oneOf(ALL_GENDER_VALUES),
+  location: Yup.string().required('Location is required')
+});
+
+type CharacterFormValues = Yup.InferType<typeof characterFormValidationSchema>;
 
 export const useCharacterForm = (
   data: Character,
@@ -35,16 +50,7 @@ export const useCharacterForm = (
       gender: data?.gender ?? Gender.UNKNOWN,
       location: data?.location ?? ''
     },
-    validate: (values) => {
-      const errors: FormikErrors<CharacterFormValues> = {};
-      if (!values.name) {
-        errors.name = 'Name is required';
-      }
-      if (!values.location) {
-        errors.location = 'Location is required';
-      }
-      return errors;
-    },
+    validationSchema: characterFormValidationSchema,
     onSubmit
   });
 };

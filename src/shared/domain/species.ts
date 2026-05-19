@@ -8,3 +8,5 @@ export enum Species {
   DISEASE = 'Disease',
   UNKNOWN = 'Unknown'
 }
+
+export const ALL_SPECIES_VALUES = Object.values(Species);
