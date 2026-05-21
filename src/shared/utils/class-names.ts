@@ -1,4 +1,8 @@
-type Parameter = string | Record<string, boolean | undefined> | Parameter[];
+type Parameter =
+  | undefined
+  | string
+  | Record<string, boolean | undefined>
+  | Parameter[];
 
 export function classNames(...params: Parameter[]): string {
   const classes: string[] = [];

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Search } from '@components/icons';
-import { type ISelectOptionProps, Select } from '@components/select';
+import { Select, type SelectOptionProps } from '@components/select';
+import { StatusCircle } from '@components/statusCircle';
+import { Status } from '@shared/domain';
 import { type KeyValue, Size } from '@shared/types';
-import { classNames } from '@shared/utils';
 import { InputField } from '../../components/inputField';
-import './ControlsExample.css';
+import './ControlsExample.scss';
 
 // todo: Временный компонент для примера и отладки различных контролов
 
@@ -16,35 +17,17 @@ const SPECIES: KeyValue<string>[] = [
   { key: 'robot', value: 'Robot' }
 ];
 
-enum Status {
-  ALIVE,
-  DEAD,
-  UNKNOWN
-}
-
-const STATUS_COLORS: Record<Status, string> = {
-  [Status.ALIVE]: 'green',
-  [Status.DEAD]: 'red',
-  [Status.UNKNOWN]: 'orange'
-};
-
 const STATUS_LIST: KeyValue<Status>[] = [
   { key: Status.ALIVE, value: 'Alive' },
   { key: Status.DEAD, value: 'Dead' },
   { key: Status.UNKNOWN, value: 'Unknown' }
 ];
 
-const StatusOption = ({ data }: ISelectOptionProps<Status>) => {
-  const circleColor = STATUS_COLORS[data.key];
+const StatusOption = ({ data }: SelectOptionProps<Status>) => {
   return (
     <div className='status-option'>
       <span>{data.value}</span>
-      <div
-        className={classNames(
-          'status-option__circle',
-          `status-option__circle_${circleColor}`
-        )}
-      ></div>
+      <StatusCircle status={data.key} />
     </div>
   );
 };

@@ -1,0 +1,19 @@
+.characters-list {
+  padding-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  .img-title {
+    width: min(60rem, 100%);
+    height: 20rem;
+    background: url('../../assets/images/rick_and_morty.png') no-repeat center
+      center / contain;
+    margin: 0 auto;
+  }
+
+  .indicator {
+    margin: 0 auto;
+  }
+}

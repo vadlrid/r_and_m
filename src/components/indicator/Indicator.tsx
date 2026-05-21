@@ -1,6 +1,6 @@
 import { Size } from '@shared/types';
 import { classNames } from '@shared/utils';
-import './Indicator.css';
+import './Indicator.scss';
 
 interface IIndicatorProps {
   size?: Size;

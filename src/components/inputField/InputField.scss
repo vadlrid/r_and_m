@@ -1,0 +1,100 @@
+.input-field {
+  border-bottom: solid 0.1rem var(--color-input-field-underline);
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 11.7rem;
+  height: 2rem;
+
+  --input-field-border-radius: 0.6rem;
+  --normal-icon-size: 2rem;
+  --large-icon-size: 2.5rem;
+
+  $main: &;
+
+  #{$main}__value {
+    width: 100%;
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 1.4rem;
+    font-family: inherit;
+    line-height: 2.1rem;
+    font-weight: 400;
+    padding-left: 0.6rem;
+    color: var(--color-text-inactive);
+  }
+
+  #{$main}__clear {
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  #{$main}__clear:disabled {
+    cursor: not-allowed;
+  }
+
+  &#{$main}_large {
+    width: 18rem;
+    height: 3rem;
+
+    #{$main}__value {
+      font-size: 2rem;
+      line-height: 3rem;
+      font-weight: 500;
+      padding: 0;
+      color: var(--color-input-text);
+    }
+  }
+
+  &#{$main}_bordered {
+    border: solid 0.1rem var(--color-input-field-border);
+    border-radius: var(--input-field-border-radius);
+    gap: 0.1rem;
+    height: 2rem;
+    width: 9.4rem;
+    align-items: center;
+    padding-right: 0.5rem;
+
+    #{$main}__value {
+      padding: 0;
+    }
+
+    #{$main}__prefix svg {
+      width: var(--normal-icon-size);
+      height: var(--normal-icon-size);
+    }
+  }
+
+  &#{$main}_large#{$main}_bordered {
+    gap: 0.6rem;
+    height: 5.5rem;
+    width: 22rem;
+    align-items: center;
+    padding-left: 1.4rem;
+    padding-right: 0.5rem;
+
+    #{$main}__value {
+      font-size: 1.6rem;
+      line-height: 1.5rem;
+      padding: 0;
+    }
+
+    #{$main}__prefix svg,
+    #{$main}__clear svg {
+      width: var(--large-icon-size);
+      height: var(--large-icon-size);
+    }
+  }
+
+  &#{$main}_invalid {
+    border-color: var(--color-error);
+    #{$main}__value {
+      color: var(--color-error);
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
 import { Logo } from '@components/icons';
-import './App.css';
+import './App.scss';
 
 const AUTHOR = 'dvladir';
 

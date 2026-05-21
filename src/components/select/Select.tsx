@@ -5,40 +5,50 @@ import { type KeyValue, Size } from '@shared/types';
 import { classNames } from '@shared/utils';
 import {
   DefaultSelectOption,
-  type ISelectOptionProps
+  type SelectOptionProps
 } from './SelectOption.tsx';
-import './Select.css';
+import './Select.scss';
 
-interface ISelectProps<T extends string | number> {
+export interface SelectProps<T extends string | number> {
+  className?: string;
   size?: Size;
   items?: KeyValue<T>[];
   placeholder?: string;
   selectedItem?: T;
   onChange?: (value: T) => void;
-  OptionComponent?: React.FC<ISelectOptionProps<T>>;
+  onTouch?: () => void;
+  isInvalid?: boolean;
+  OptionComponent?: React.FC<SelectOptionProps<T>>;
 }
 
 export const Select = <T extends string | number>({
+  className: externalClassName,
   size = Size.LARGE,
   items,
   placeholder,
   selectedItem,
   onChange,
+  onTouch,
+  isInvalid,
   OptionComponent = DefaultSelectOption<T>
-}: ISelectProps<T>) => {
+}: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const selectContainerRef = useRef<HTMLDivElement>(null);
   useOutsideClick(selectContainerRef, () => setIsOpen(false));
 
-  const toggleOpen = () => setIsOpen((value) => !value);
+  const toggleOpen = useCallback(() => {
+    setIsOpen((value) => !value);
+    onTouch?.();
+  }, [onTouch]);
 
   const handleSelect = useCallback(
     (item: KeyValue<T>) => {
       onChange?.(item.key);
       setIsOpen(false);
+      onTouch?.();
     },
-    [setIsOpen, onChange]
+    [onChange, onTouch]
   );
 
   const optionList = useMemo(() => {
@@ -62,11 +72,11 @@ export const Select = <T extends string | number>({
   return (
     <div
       ref={selectContainerRef}
-      className={classNames(
-        'select',
-        { select_opened: isOpen },
-        { select_large: size === Size.LARGE }
-      )}
+      className={classNames(externalClassName, 'select', {
+        select_opened: isOpen,
+        select_large: size === Size.LARGE,
+        select_invalid: isInvalid
+      })}
     >
       <div className='select__selection' onClick={toggleOpen}>
         {selectedOption ? (

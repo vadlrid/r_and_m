@@ -1,0 +1,115 @@
+.select {
+  position: relative;
+  font-size: 1.4rem;
+  line-height: 2.1rem;
+  font-weight: 400;
+  width: 9.4rem;
+
+  --select-border-radius: 0.6rem;
+
+  $main: &;
+
+  &#{$main}_large {
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    width: 24rem;
+  }
+
+  & > #{$main}__selection {
+    color: var(--color-text-inactive);
+    background: var(--color-white);
+    border: 0.1rem solid var(--color-border);
+    border-radius: var(--select-border-radius);
+    display: flex;
+    justify-content: space-between;
+    white-space: nowrap;
+    align-items: center;
+    height: 2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.6rem;
+    cursor: pointer;
+    user-select: none;
+
+    & > #{$main}__selection__caret {
+      width: 0.4rem;
+      height: 0.2rem;
+
+      &#{$main}__selection__caret_down {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &#{$main}_large > #{$main}__selection {
+    height: 5.5rem;
+    padding-left: 1.3rem;
+    padding-right: 2rem;
+
+    & > #{$main}__selection__caret {
+      width: 1rem;
+      height: 4.9rem;
+    }
+  }
+
+  & > #{$main}__options {
+    color: var(--color-text-inactive);
+    background: var(--color-white);
+    border: 0.1rem solid var(--color-border);
+    border-radius: var(--select-border-radius);
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    margin-top: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    & > #{$main}__option {
+      padding-left: 0.5rem;
+      padding-right: 0.6rem;
+      height: 1.7rem;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+
+      &:first-child {
+        border-top-left-radius: var(--select-border-radius);
+        border-top-right-radius: var(--select-border-radius);
+      }
+
+      &:last-child {
+        border-bottom-left-radius: var(--select-border-radius);
+        border-bottom-right-radius: var(--select-border-radius);
+      }
+
+      &:hover {
+        background: var(--color-highlight);
+      }
+
+      &#{$main}__options_selected {
+        background: var(--color-selection);
+      }
+    }
+  }
+
+  &#{$main}_large > #{$main}__options {
+    gap: 0;
+    padding: 0;
+
+    & > #{$main}__option {
+      padding-left: 1.3rem;
+      padding-right: 2rem;
+      height: 4rem;
+      margin: 0;
+    }
+  }
+
+  &#{$main}_invalid > #{$main}__selection {
+    color: var(--color-error);
+    border-color: var(--color-error);
+  }
+}

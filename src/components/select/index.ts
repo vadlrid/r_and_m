@@ -1,4 +1,5 @@
-import type { ISelectOptionProps } from './SelectOption.tsx';
+import { FormSelect } from './FormSelect.tsx';
+import type { SelectOptionProps } from './SelectOption.tsx';
 import { Select } from './Select';
 
-export { Select, type ISelectOptionProps };
+export { Select, FormSelect, type SelectOptionProps };
