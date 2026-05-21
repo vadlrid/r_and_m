@@ -1,18 +1,21 @@
 import { useCallback, useState } from 'react';
 import { Check, Close, Edit } from '@components/icons';
 import { type Character } from '@shared/domain';
+import { classNames } from '@shared/utils';
 import { CharacterCardEdit } from './CharacterCardEdit.tsx';
 import { CharacterCardView } from './CharacterCardView.tsx';
 import './CharacterCard.scss';
 import { useCharacterForm } from './CharacterForm.ts';
 
 interface CharacterCardProps {
+  className?: string;
   data: Character;
   onChange?: (data: Character) => void;
   onOpen?: (data: Character) => void;
 }
 
 export const CharacterCard = ({
+  className: classNameExternal,
   data,
   onChange,
   onOpen
@@ -32,7 +35,7 @@ export const CharacterCard = ({
   };
 
   return (
-    <section className='character-card'>
+    <section className={classNames(classNameExternal, 'character-card')}>
       {isEditMode ? (
         <div className='character-card__edit-confirm'>
           <Close role='button' onClick={handleCancel} />
