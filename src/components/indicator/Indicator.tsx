@@ -3,16 +3,21 @@ import { classNames } from '@shared/utils';
 import './Indicator.scss';
 
 interface IIndicatorProps {
+  className?: string;
   size?: Size;
   title?: string;
 }
 
-export const Indicator = ({ size, title }: IIndicatorProps) => {
+export const Indicator = ({
+  className: externalClassName,
+  size,
+  title
+}: IIndicatorProps) => {
   size = size ?? Size.LARGE;
   return (
     <>
       <div
-        className={classNames('indicator', {
+        className={classNames(externalClassName, 'indicator', {
           indicator_large: size === Size.LARGE
         })}
       >

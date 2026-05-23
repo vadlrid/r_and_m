@@ -1,13 +1,8 @@
-import { Gender } from './gender.ts';
-import { Species } from './species.ts';
-import { Status } from './status.ts';
+import type { CharacterResponse } from './character-response.ts';
 
-export interface Character {
-  id: number;
-  name: string;
-  status: Status;
-  species: Species;
-  gender: Gender;
+export interface Character extends Pick<
+  CharacterResponse,
+  'id' | 'name' | 'status' | 'species' | 'gender' | 'image'
+> {
   location: string;
-  image: string;
 }

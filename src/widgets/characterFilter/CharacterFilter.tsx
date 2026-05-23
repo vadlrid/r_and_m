@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Search } from '@components/icons';
 import { InputField } from '@components/inputField';
 import { Select } from '@components/select';
@@ -8,6 +8,7 @@ import {
   LIST_SPECIES,
   LIST_STATUS
 } from '@shared/domain';
+import { useDebounce } from '@shared/hooks';
 import { Size } from '@shared/types';
 import { classNames } from '@shared/utils';
 
@@ -17,6 +18,27 @@ interface CharacterFilterProps {
   onQueryChange?: (query: CharacterSearchQuery) => void;
 }
 
+const areQueriesEqual = (
+  a?: CharacterSearchQuery,
+  b?: CharacterSearchQuery
+) => {
+  if (a === b) {
+    return true;
+  }
+  if (
+    (a === undefined && b !== undefined) ||
+    (a !== undefined && b === undefined)
+  ) {
+    return false;
+  }
+  return (
+    a?.name === b?.name &&
+    a?.species === b?.species &&
+    a?.gender === b?.gender &&
+    a?.status === b?.status
+  );
+};
+
 export const CharacterFilter = ({
   className: externalClassName,
   query = {},
@@ -24,10 +46,21 @@ export const CharacterFilter = ({
 }: CharacterFilterProps) => {
   const handleQueryChange = useCallback(
     (updatedQuery: CharacterSearchQuery) => {
-      onQueryChange?.({ ...query, ...updatedQuery });
+      const newQuery: CharacterSearchQuery = { ...query, ...updatedQuery };
+      if (areQueriesEqual(query, newQuery)) {
+        return;
+      }
+      onQueryChange?.(newQuery);
     },
     [query, onQueryChange]
   );
+
+  const [name, setName] = useState<string | undefined>(query.name);
+  const debouncedName = useDebounce(name);
+
+  useEffect(() => {
+    handleQueryChange({ name: debouncedName });
+  }, [debouncedName, handleQueryChange]);
 
   return (
     <section className={classNames(externalClassName, 'character-filter')}>
@@ -36,8 +69,8 @@ export const CharacterFilter = ({
         hasBorder
         Prefix={Search}
         placeholder='Filter by name...'
-        value={query.name}
-        onChange={(name) => handleQueryChange({ name })}
+        value={name}
+        onChange={setName}
       />
       <Select
         size={Size.LARGE}
@@ -45,6 +78,7 @@ export const CharacterFilter = ({
         items={LIST_SPECIES}
         selectedItem={query.species}
         onChange={(species) => handleQueryChange({ species })}
+        hasEmptyOption
       />
       <Select
         size={Size.LARGE}
@@ -52,6 +86,7 @@ export const CharacterFilter = ({
         items={LIST_GENDER}
         selectedItem={query.gender}
         onChange={(gender) => handleQueryChange({ gender })}
+        hasEmptyOption
       />
       <Select
         size={Size.LARGE}
@@ -59,6 +94,7 @@ export const CharacterFilter = ({
         items={LIST_STATUS}
         selectedItem={query.status}
         onChange={(status) => handleQueryChange({ status })}
+        hasEmptyOption
       />
     </section>
   );
