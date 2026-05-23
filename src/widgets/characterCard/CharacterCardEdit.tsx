@@ -3,18 +3,8 @@ import { FormInputField } from '@components/inputField';
 import { FormSelect, type SelectOptionProps } from '@components/select';
 import { StatusCircle } from '@components/statusCircle';
 import type { CharacterForm } from '@widgets/characterCard/CharacterForm.ts';
-import {
-  ALL_GENDER_VALUES,
-  ALL_SPECIES_VALUES,
-  ALL_STATUS_VALUES,
-  Status
-} from '@shared/domain';
+import { LIST_GENDER, LIST_SPECIES, LIST_STATUS, Status } from '@shared/domain';
 import { Size } from '@shared/types';
-import { convertToKeyValueArray } from '@shared/utils';
-
-const LIST_GENDER = convertToKeyValueArray(ALL_GENDER_VALUES);
-const LIST_SPECIES = convertToKeyValueArray(ALL_SPECIES_VALUES);
-const LIST_STATUS = convertToKeyValueArray(ALL_STATUS_VALUES);
 
 const StatusOption = ({ data }: SelectOptionProps<Status>) => {
   return (
