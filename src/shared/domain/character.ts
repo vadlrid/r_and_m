@@ -1,4 +1,4 @@
-import type { CharacterResponse } from './character-response.ts';
+import type { CharacterResponse } from './characterResponse';
 
 export interface Character extends Pick<
   CharacterResponse,

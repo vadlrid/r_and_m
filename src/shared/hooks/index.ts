@@ -1,3 +1,3 @@
-export * from './use-outside-click.ts';
-export * from './use-fetch.ts';
-export * from './use-debounce.ts';
+export * from './useOutsideClick';
+export * from './useFetch';
+export * from './useDebounce';

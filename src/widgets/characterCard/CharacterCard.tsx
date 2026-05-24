@@ -2,9 +2,9 @@ import { useCallback, useState } from 'react';
 import { Check, Close, Edit } from '@components/icons';
 import { type Character } from '@shared/domain';
 import { classNames } from '@shared/utils';
-import { CharacterCardEdit } from './CharacterCardEdit.tsx';
-import { CharacterCardView } from './CharacterCardView.tsx';
 import './CharacterCard.scss';
+import { CharacterCardEdit } from './CharacterCardEdit';
+import { CharacterCardView } from './CharacterCardView';
 import { useCharacterForm } from './CharacterForm.ts';
 
 interface CharacterCardProps {

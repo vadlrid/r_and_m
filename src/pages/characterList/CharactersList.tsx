@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router';
 import { Indicator } from '@components/indicator';
 import { CharacterCard } from '@widgets/characterCard';
 import { CharacterFilter } from '@widgets/characterFilter';
-import { useQueryCharacters } from '@shared/api-hooks';
-import { type Character, type CharacterSearchQuery } from '@shared/domain';
+import type { Character, CharacterSearchQuery } from '@shared/domain';
 import { Size } from '@shared/types';
+import { useQueryCharacters } from '../../shared/apiHooks';
 import './CharactersList.scss';
 
 export const CharactersList = () => {

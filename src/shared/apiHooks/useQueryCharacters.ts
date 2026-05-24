@@ -6,23 +6,23 @@ import type {
   PageData
 } from '@shared/domain';
 import { HTTP_METHOD, useFetch } from '@shared/hooks';
-import { BASE_URL } from './base-url.ts';
+import { BASE_URL } from './baseUrl';
 
-const convertCharacters = (response: unknown): PageData<Character> => {
-  const data = response as PageData<CharacterResponse>;
+const convertCharacters = (
+  response: PageData<CharacterResponse>
+): PageData<Character> => {
   return {
-    ...data,
-    results: data.results.map(
-      ({ id, name, status, species, location, gender, image }) =>
-        ({
-          id,
-          name,
-          status,
-          species,
-          gender,
-          image,
-          location: location.name
-        }) as Character
+    ...response,
+    results: response.results.map(
+      ({ id, name, status, species, location, gender, image }) => ({
+        id,
+        name,
+        status,
+        species,
+        gender,
+        image,
+        location: location.name
+      })
     )
   };
 };

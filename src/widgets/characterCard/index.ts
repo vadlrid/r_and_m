@@ -1,3 +1,1 @@
-import { CharacterCard } from './CharacterCard.tsx';
-
-export { CharacterCard };
+export { CharacterCard } from './CharacterCard';
