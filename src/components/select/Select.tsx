@@ -15,10 +15,11 @@ export interface SelectProps<T extends string | number> {
   items?: KeyValue<T>[];
   placeholder?: string;
   selectedItem?: T;
-  onChange?: (value: T) => void;
+  onChange?: (value?: T) => void;
   onTouch?: () => void;
   isInvalid?: boolean;
   OptionComponent?: React.FC<SelectOptionProps<T>>;
+  hasEmptyOption?: boolean;
 }
 
 export const Select = <T extends string | number>({
@@ -30,7 +31,8 @@ export const Select = <T extends string | number>({
   onChange,
   onTouch,
   isInvalid,
-  OptionComponent = DefaultSelectOption<T>
+  OptionComponent = DefaultSelectOption<T>,
+  hasEmptyOption
 }: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,6 +52,12 @@ export const Select = <T extends string | number>({
     },
     [onChange, onTouch]
   );
+
+  const clear = useCallback(() => {
+    onChange?.(undefined);
+    setIsOpen(false);
+    onTouch?.();
+  }, [onChange, onTouch]);
 
   const optionList = useMemo(() => {
     return (items ?? []).map((item) => (
@@ -90,7 +98,14 @@ export const Select = <T extends string | number>({
           })}
         />
       </div>
-      {isOpen && <div className='select__options'>{optionList}</div>}
+      {isOpen && (
+        <div className='select__options'>
+          {hasEmptyOption && selectedOption && (
+            <div className='select__option' onClick={clear}></div>
+          )}
+          {optionList}
+        </div>
+      )}
     </div>
   );
 };

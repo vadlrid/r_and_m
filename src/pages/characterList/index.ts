@@ -1,3 +1,1 @@
-import { CharactersList } from './CharactersList.tsx';
-
-export { CharactersList };
+export * from './CharactersList.tsx';
