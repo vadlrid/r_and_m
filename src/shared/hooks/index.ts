@@ -1,3 +1,4 @@
 export * from './useOutsideClick';
-export * from './useFetch';
+export * from './useRequest';
 export * from './useDebounce';
+export * from './useApiConfig';

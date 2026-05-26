@@ -12,10 +12,10 @@ import './Select.scss';
 export interface SelectProps<T extends string | number> {
   className?: string;
   size?: Size;
-  items?: KeyValue<T>[];
+  items?: KeyValue<T | null | undefined>[];
   placeholder?: string;
   selectedItem?: T;
-  onChange?: (value?: T) => void;
+  onChange?: (value?: T | null) => void;
   onTouch?: () => void;
   isInvalid?: boolean;
   OptionComponent?: React.FC<SelectOptionProps<T>>;
@@ -45,7 +45,7 @@ export const Select = <T extends string | number>({
   }, [onTouch]);
 
   const handleSelect = useCallback(
-    (item: KeyValue<T>) => {
+    (item: KeyValue<T | null | undefined>) => {
       onChange?.(item.key);
       setIsOpen(false);
       onTouch?.();
