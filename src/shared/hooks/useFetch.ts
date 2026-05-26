@@ -8,10 +8,10 @@ export enum HTTP_METHOD {
   DELETE = 'DELETE'
 }
 
-interface UseFetchProps<T> {
+interface UseFetchProps<T, R> {
   url: string;
   method: HTTP_METHOD;
-  convertResponse?: (response: unknown) => T;
+  convertResponse?: (response: R) => T;
 }
 
 type RequestBody = Record<string, unknown> | undefined;
@@ -28,14 +28,14 @@ const addQueryParams = (url: string, queryParams?: QueryParams) => {
     return url;
   }
 
-  const paramParts = Object.entries(queryParams).reduce(
+  const paramParts = Object.entries(queryParams).reduce<string[]>(
     (parts, [key, value]) => {
       if (value === null || value === undefined || value === '') {
         return parts;
       }
       return [...parts, `${key}=${encodeURIComponent(value.toString())}`];
     },
-    [] as string[]
+    []
   );
 
   if (!paramParts.length) {
@@ -45,11 +45,11 @@ const addQueryParams = (url: string, queryParams?: QueryParams) => {
   return `${url}?${paramParts.join('&')}`;
 };
 
-export const useFetch = <T, B extends RequestBody = undefined>({
+export const useFetch = <T, B extends RequestBody = undefined, R = T>({
   url,
   method,
-  convertResponse = (response) => response as T
-}: UseFetchProps<T>) => {
+  convertResponse = (response: R) => response as unknown as T
+}: UseFetchProps<T, R>) => {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<T | undefined>(undefined);
   const [error, setError] = useState<Error | unknown | undefined>(undefined);

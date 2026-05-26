@@ -1,3 +1,1 @@
-import { Indicator } from './Indicator.tsx';
-
-export { Indicator };
+export { Indicator } from './Indicator';

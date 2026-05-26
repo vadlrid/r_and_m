@@ -1,3 +1,1 @@
-import { StatusCircle } from './StatusCircle.tsx';
-
-export { StatusCircle };
+export { StatusCircle } from './StatusCircle';

@@ -2,9 +2,9 @@ import { FormikProvider } from 'formik';
 import { FormInputField } from '@components/inputField';
 import { FormSelect, type SelectOptionProps } from '@components/select';
 import { StatusCircle } from '@components/statusCircle';
-import type { CharacterForm } from '@widgets/characterCard/CharacterForm.ts';
 import { LIST_GENDER, LIST_SPECIES, LIST_STATUS, Status } from '@shared/domain';
 import { Size } from '@shared/types';
+import type { CharacterForm } from './CharacterForm';
 
 const StatusOption = ({ data }: SelectOptionProps<Status>) => {
   return (

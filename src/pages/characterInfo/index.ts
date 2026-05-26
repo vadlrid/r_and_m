@@ -1,3 +1,1 @@
-import { CharacterInfo } from './CharacterInfo.tsx';
-
-export { CharacterInfo };
+export { CharacterInfo } from './CharacterInfo';

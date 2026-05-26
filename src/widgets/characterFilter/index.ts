@@ -1,3 +1,1 @@
-import { CharacterFilter } from './CharacterFilter.tsx';
-
-export { CharacterFilter };
+export { CharacterFilter } from './CharacterFilter';

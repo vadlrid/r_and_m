@@ -1,6 +1,6 @@
-import { Gender } from '@shared/domain/gender.ts';
-import { Species } from '@shared/domain/species.ts';
-import { Status } from '@shared/domain/status.ts';
+import { Gender } from './gender';
+import { Species } from './species';
+import { Status } from './status';
 
 export interface CharacterResponse {
   id: number;
