@@ -1,16 +1,19 @@
 import { useCallback } from 'react';
+import type { AxiosError } from 'axios';
 import type {
   Character,
   CharacterResponse,
   CharacterSearchQuery,
   PageData
 } from '@shared/domain';
-import { HTTP_METHOD, useFetch } from '@shared/hooks';
-import { BASE_URL } from './baseUrl';
+import { HTTP_METHOD, useRequest } from '@shared/hooks';
 
-const convertCharacters = (
-  response: PageData<CharacterResponse>
-): PageData<Character> => {
+const convertResponse = (
+  response?: PageData<CharacterResponse>
+): PageData<Character> | undefined => {
+  if (!response) {
+    return undefined;
+  }
   return {
     ...response,
     results: response.results.map(
@@ -27,26 +30,29 @@ const convertCharacters = (
   };
 };
 
+const getErrorMessage = (error: AxiosError<{ error: string }>) =>
+  error.response?.data?.error ?? '';
+
 export const useQueryCharacters = () => {
-  const { invokeFetch, data, isLoading, error } = useFetch({
-    url: `${BASE_URL}/api/character`,
+  const { invokeRequest, data, isLoading } = useRequest({
+    url: `/character`,
     method: HTTP_METHOD.GET,
-    convertResponse: convertCharacters
+    convertResponse,
+    getErrorMessage
   });
 
   const queryCharacters = useCallback(
     (query: CharacterSearchQuery) => {
-      invokeFetch({
-        queryParams: query as Record<string, string>
-      });
+      const name = query?.name?.trim()?.toLowerCase();
+      const params = { ...query, name };
+      invokeRequest({ params });
     },
-    [invokeFetch]
+    [invokeRequest]
   );
 
   return {
     queryCharacters,
     isLoading,
-    data,
-    error
+    data
   };
 };

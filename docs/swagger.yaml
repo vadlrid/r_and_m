@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  title: Rick and Morty API (Custom Swagger)
+  description: Документация для публичного Rick and Morty API
+  version: 1.0.0
+servers:
+  - url: https://rickandmortyapi.com/api
+paths:
+  /character:
+    get:
+      summary: Получить список персонажей
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы
+          required: false
+          schema:
+            type: integer
+        - name: name
+          in: query
+          description: Поиск по имени
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ
+  /character/{id}:
+    get:
+      summary: Получить персонажа по ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Успешный ответ

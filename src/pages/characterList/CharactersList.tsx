@@ -16,7 +16,7 @@ export const CharactersList = () => {
 
   const [query, setQuery] = useState<CharacterSearchQuery>({});
 
-  const { queryCharacters, data, isLoading, error } = useQueryCharacters();
+  const { queryCharacters, data, isLoading } = useQueryCharacters();
 
   useEffect(() => {
     queryCharacters(query);
@@ -38,10 +38,6 @@ export const CharactersList = () => {
               size={Size.LARGE}
               title='Loading characters...'
             />
-          ) : error ? (
-            <h3 className='list__error'>
-              An error occurred while loading characters list.
-            </h3>
           ) : (
             <section className='list__items'>
               {data?.results?.map((character) => (
