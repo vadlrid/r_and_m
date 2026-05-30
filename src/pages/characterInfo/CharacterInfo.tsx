@@ -10,7 +10,7 @@ export const CharacterInfo = () => {
 
   return (
     <>
-      <section className='character-info'>
+      <section className='character-info side-bars'>
         <button type='button' className='back' onClick={() => navigate(-1)}>
           <ArrowBack />
           <h3>GO BACK</h3>

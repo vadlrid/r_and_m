@@ -27,7 +27,7 @@ const StatusOption = ({ data }: SelectOptionProps<Status>) => {
   return (
     <div className='status-option'>
       <span>{data.value}</span>
-      <StatusCircle status={data.key} />
+      {!!data.key && <StatusCircle status={data.key} />}
     </div>
   );
 };

@@ -47,7 +47,6 @@ export const useRequest = <
   getErrorMessage = (error: AxiosError) => error.response?.data as string
 }: UseRequestProps<T, R, E>) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<T | undefined>(undefined);
 
   const apiConfig = useApiConfig();
   if (!apiConfig.baseUrl) {
@@ -63,6 +62,7 @@ export const useRequest = <
       abortControllerRef.current = controller;
 
       setIsLoading(true);
+      let result: T | undefined = undefined;
 
       try {
         const response = await axios.request<B, AxiosResponse<R>>({
@@ -75,7 +75,7 @@ export const useRequest = <
           ...axiosConfig
         });
 
-        setData(convertResponse(response.data));
+        result = convertResponse(response.data);
       } catch (err) {
         let axiosErrorCode: string | undefined;
         let errorMessage: string | undefined;
@@ -101,6 +101,8 @@ export const useRequest = <
           setIsLoading(false);
         }
       }
+
+      return result;
     },
     [apiConfig.baseUrl, url, method, convertResponse, getErrorMessage]
   );
@@ -110,5 +112,5 @@ export const useRequest = <
     return () => abortControllerRef.current?.abort();
   }, []);
 
-  return { invokeRequest, isLoading, data };
+  return { invokeRequest, isLoading };
 };

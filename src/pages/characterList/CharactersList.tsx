@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { Indicator } from '@components/indicator';
+import { ScrollContainer } from '@components/scrollContainer';
 import { CharacterCard } from '@widgets/characterCard';
 import { CharacterFilter } from '@widgets/characterFilter';
-import type { Character, CharacterSearchQuery } from '@shared/domain';
+import type { Character } from '@shared/domain';
 import { Size } from '@shared/types';
-import { useQueryCharacters } from '../../shared/apiHooks';
 import './CharactersList.scss';
+import { CharactersListStateContext } from './CharactersListStateContext';
 
 export const CharactersList = () => {
   const navigate = useNavigate();
@@ -14,44 +15,46 @@ export const CharactersList = () => {
   const handleOpen = (character: Character) =>
     navigate(`/info/${character.id}`);
 
-  const [query, setQuery] = useState<CharacterSearchQuery>({});
-
-  const { queryCharacters, data, isLoading } = useQueryCharacters();
-
-  useEffect(() => {
-    queryCharacters(query);
-  }, [query, queryCharacters]);
+  const context = useContext(CharactersListStateContext);
 
   return (
-    <>
-      <section className='characters-list'>
-        <div className='img-title'></div>
-        <div className='list'>
-          <CharacterFilter
-            className='list__filter'
-            query={query}
-            onQueryChange={(newQuery) => setQuery(newQuery)}
+    <ScrollContainer
+      className='characters-list'
+      scrollTop={context?.scrollTop}
+      onScrollTopChanged={(value) => context?.changeScrollTop(value)}
+      onBottomReached={() => context?.loadMore()}
+    >
+      <div className='img-title'></div>
+      <div className='list'>
+        <CharacterFilter
+          className='list__filter'
+          query={context?.query}
+          onQueryChange={(newQuery) => context?.changeQuery(newQuery)}
+        />
+        {!context?.list?.length && context?.isLoading ? (
+          <Indicator
+            className='list__indicator'
+            size={Size.LARGE}
+            title='Loading characters...'
           />
-          {isLoading ? (
-            <Indicator
-              className='list__indicator'
-              size={Size.LARGE}
-              title='Loading characters...'
-            />
-          ) : (
-            <section className='list__items'>
-              {data?.results?.map((character) => (
-                <CharacterCard
-                  key={character.id}
-                  className='list__items__item'
-                  data={character}
-                  onOpen={handleOpen}
-                />
-              ))}
-            </section>
-          )}
-        </div>
-      </section>
-    </>
+        ) : (
+          <section className='list__items'>
+            {context?.list?.map((character) => (
+              <CharacterCard
+                key={character.id}
+                className='list__items__item'
+                data={character}
+                onOpen={handleOpen}
+              />
+            ))}
+            {context?.isLoading && (
+              <div className='list__items__loading-bar'>
+                <Indicator size={Size.SMALL} />
+              </div>
+            )}
+          </section>
+        )}
+      </div>
+    </ScrollContainer>
   );
 };
