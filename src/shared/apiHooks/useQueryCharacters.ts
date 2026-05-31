@@ -33,10 +33,11 @@ const convertResponse = (
 const getErrorMessage = (error: AxiosError<{ error: string }>) =>
   error.response?.data?.error ?? '';
 
-export const useQueryCharacters = () => {
+export const useQueryCharacters = (attempts: number) => {
   const { invokeRequest, isLoading } = useRequest({
     url: `/character`,
     method: HTTP_METHOD.GET,
+    attempts,
     convertResponse,
     getErrorMessage
   });

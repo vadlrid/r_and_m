@@ -19,6 +19,8 @@ export enum HTTP_METHOD {
 interface UseRequestProps<T, R, E> {
   url: string;
   method: HTTP_METHOD;
+  attempts?: number;
+  attemptsTimeout?: number;
   convertResponse?: (response: R) => T;
   getErrorMessage?: (error: AxiosError<E>) => string;
 }
@@ -34,6 +36,11 @@ interface InvokeFetchParams<B extends RequestBody> {
     'method' | 'data' | 'params' | 'baseURL'
   >;
 }
+interface InvokeFetchParamsWithAbortSignal<
+  B extends RequestBody
+> extends InvokeFetchParams<B> {
+  abortSignal: AbortSignal;
+}
 
 export const useRequest = <
   T,
@@ -43,6 +50,8 @@ export const useRequest = <
 >({
   url,
   method,
+  attempts = 1,
+  attemptsTimeout = 5000,
   convertResponse = (response: R) => response as unknown as T,
   getErrorMessage = (error: AxiosError) => error.response?.data as string
 }: UseRequestProps<T, R, E>) => {
@@ -55,13 +64,13 @@ export const useRequest = <
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const invokeRequest = useCallback(
-    async ({ params, data, axiosConfig }: InvokeFetchParams<B>) => {
-      abortControllerRef.current?.abort();
-      const controller = new AbortController();
-      abortControllerRef.current = controller;
-
-      setIsLoading(true);
+  const doRequest = useCallback(
+    async ({
+      params,
+      data,
+      axiosConfig,
+      abortSignal
+    }: InvokeFetchParamsWithAbortSignal<B>) => {
       let result: T | undefined = undefined;
 
       try {
@@ -71,40 +80,74 @@ export const useRequest = <
           method,
           params,
           data,
-          signal: controller.signal,
+          signal: abortSignal,
           ...axiosConfig
         });
 
         result = convertResponse(response.data);
       } catch (err) {
-        let axiosErrorCode: string | undefined;
-        let errorMessage: string | undefined;
-
-        if (err instanceof AxiosError) {
-          axiosErrorCode = err.code;
-          errorMessage = getErrorMessage(err);
-        }
-
-        if (
-          !errorMessage &&
-          err instanceof Error &&
-          axiosErrorCode !== AxiosError.ERR_CANCELED
-        ) {
-          errorMessage = err.message;
-        }
-
-        if (errorMessage) {
-          toast.error(errorMessage);
-        }
-      } finally {
-        if (abortControllerRef.current === controller) {
-          setIsLoading(false);
+        const errorCode = err instanceof AxiosError ? err.code : undefined;
+        if (errorCode !== AxiosError.ERR_CANCELED) {
+          throw err;
         }
       }
-
       return result;
     },
-    [apiConfig.baseUrl, url, method, convertResponse, getErrorMessage]
+    [apiConfig.baseUrl, url, method, convertResponse]
+  );
+
+  const invokeRequest = useCallback(
+    (invokeFetchParams: InvokeFetchParams<B>) => {
+      abortControllerRef.current?.abort();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      let i = 0;
+
+      const invoke = (): Promise<T | undefined> =>
+        doRequest({
+          ...invokeFetchParams,
+          abortSignal: controller.signal
+        }).catch((err) => {
+          if (i < attempts) {
+            i++;
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                invoke().then(resolve, reject);
+              }, attemptsTimeout);
+            });
+          }
+          return Promise.reject(err);
+        });
+
+      return new Promise<T | undefined>((resolve) => {
+        setIsLoading(true);
+
+        invoke()
+          .then((result) => resolve(result))
+          .catch((err) => {
+            let errorMessage: string | undefined;
+
+            if (err instanceof AxiosError) {
+              errorMessage = getErrorMessage(err);
+            }
+
+            if (!errorMessage && err instanceof Error) {
+              errorMessage = err.message;
+            }
+
+            if (errorMessage) {
+              toast.error(errorMessage);
+            }
+
+            resolve(undefined);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      });
+    },
+    [doRequest, attempts, attemptsTimeout, getErrorMessage]
   );
 
   // Отменяем запрос через AbortController в случае unmount

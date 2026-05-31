@@ -3,10 +3,12 @@ import { useQueryCharacters } from '@shared/apiHooks';
 import type { Character, CharacterSearchQuery, PageData } from '@shared/domain';
 import { CharactersListStateContext } from './CharactersListStateContext';
 
+const REQUEST_ATTEMPTS = 5;
+
 export const CharactersListStateProvider = ({
   children
 }: PropsWithChildren) => {
-  const { queryCharacters, isLoading } = useQueryCharacters();
+  const { queryCharacters, isLoading } = useQueryCharacters(REQUEST_ATTEMPTS);
 
   const [query, setQuery] = useState<CharacterSearchQuery>({});
   const [page, setPage] = useState(1);
@@ -28,22 +30,17 @@ export const CharactersListStateProvider = ({
   }, [page, query, queryCharacters]);
 
   const loadMore = () => {
-    if (!canNext || isLoading) {
+    if (!canNext || isLoading || !isSuccess) {
       return;
     }
-
-    if (isSuccess) {
-      setPage((page) => page + 1);
-    } else {
-      setQuery((value) => ({ ...value }));
-    }
+    setPage((page) => page + 1);
   };
 
   const changeQuery = (newQuery: CharacterSearchQuery) => {
-    setQuery(newQuery);
     setScrollTop(0);
     setList([]);
     setPage(1);
+    setQuery(newQuery);
   };
 
   const changeScrollTop = (value: number) => setScrollTop(value);
