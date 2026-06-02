@@ -34,7 +34,7 @@ const getErrorMessage = (error: AxiosError<{ error: string }>) =>
   error.response?.data?.error ?? '';
 
 export const useQueryCharacters = (attempts: number) => {
-  const { invokeRequest, isLoading } = useRequest({
+  const invokeRequest = useRequest({
     url: `/character`,
     method: HTTP_METHOD.GET,
     attempts,
@@ -42,7 +42,7 @@ export const useQueryCharacters = (attempts: number) => {
     getErrorMessage
   });
 
-  const queryCharacters = useCallback(
+  return useCallback(
     (page: number, query: CharacterSearchQuery) => {
       const name = query?.name?.trim()?.toLowerCase();
       const params = { ...query, name, page };
@@ -50,9 +50,4 @@ export const useQueryCharacters = (attempts: number) => {
     },
     [invokeRequest]
   );
-
-  return {
-    queryCharacters,
-    isLoading
-  };
 };

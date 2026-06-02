@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import toast from 'react-hot-toast';
 import {
   AxiosError,
@@ -55,8 +55,6 @@ export const useRequest = <
   convertResponse = (response: R) => response as unknown as T,
   getErrorMessage = (error: AxiosError) => error.response?.data as string
 }: UseRequestProps<T, R, E>) => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const apiConfig = useApiConfig();
   if (!apiConfig.baseUrl) {
     throw new Error('Base URL not provided');
@@ -121,8 +119,6 @@ export const useRequest = <
         });
 
       return new Promise<T | undefined>((resolve) => {
-        setIsLoading(true);
-
         invoke()
           .then((result) => resolve(result))
           .catch((err) => {
@@ -141,9 +137,6 @@ export const useRequest = <
             }
 
             resolve(undefined);
-          })
-          .finally(() => {
-            setIsLoading(false);
           });
       });
     },
@@ -155,5 +148,5 @@ export const useRequest = <
     return () => abortControllerRef.current?.abort();
   }, []);
 
-  return { invokeRequest, isLoading };
+  return invokeRequest;
 };
