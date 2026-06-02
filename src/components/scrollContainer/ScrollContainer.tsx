@@ -30,10 +30,10 @@ export const ScrollContainer = ({
     }, 250);
 
     container.addEventListener('scroll', checkPosition);
-    container.addEventListener('resize', checkPosition);
+    window.addEventListener('resize', checkPosition);
     return () => {
       container.removeEventListener('scroll', checkPosition);
-      container.removeEventListener('resize', checkPosition);
+      window.removeEventListener('resize', checkPosition);
     };
   }, [onBottomReached, onScrollTopChanged]);
 
