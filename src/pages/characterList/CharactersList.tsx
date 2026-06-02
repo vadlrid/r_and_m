@@ -38,17 +38,17 @@ export const CharactersList = () => {
             title='Loading characters...'
           />
         ) : (
-          <section className='list__items'>
+          <section className='list__content'>
             {context?.list?.map((character) => (
               <CharacterCard
                 key={character.id}
-                className='list__items__item'
+                className='list__item'
                 data={character}
                 onOpen={handleOpen}
               />
             ))}
             {context?.isLoading && (
-              <div className='list__items__loading-bar'>
+              <div className='list__indicator'>
                 <Indicator size={Size.SMALL} />
               </div>
             )}

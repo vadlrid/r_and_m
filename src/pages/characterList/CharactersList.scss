@@ -26,9 +26,8 @@
 
     #{$list}__filter,
     #{$list}__indicator,
-    #{$list}__items__loading-bar,
     #{$list}__error,
-    #{$list}__items {
+    #{$list}__content {
       grid-column: 1/5;
     }
 
@@ -47,12 +46,12 @@
       text-align: center;
     }
 
-    & > #{$list}__items {
+    & > #{$list}__content {
       display: grid;
       grid-template-columns: subgrid;
       gap: 2.8rem;
 
-      & > #{$list}__items__item {
+      & > #{$list}__item {
         &:nth-child(2n - 1) {
           grid-column: 1 / 3;
         }
