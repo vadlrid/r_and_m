@@ -1,20 +1,5 @@
 import { type PropsWithChildren, useEffect, useRef } from 'react';
-import { classNames } from '@shared/utils';
-
-type CallbackFn = (...args: unknown[]) => void;
-const throttle = (callee: CallbackFn, timeout: number): CallbackFn => {
-  let timerId: number | null = null;
-  return function (...args: unknown[]) {
-    if (timerId) {
-      return;
-    }
-    timerId = setTimeout(() => {
-      callee(...args);
-      clearTimeout(timerId!);
-      timerId = null;
-    }, timeout);
-  };
-};
+import { classNames, throttle } from '@shared/utils';
 
 interface ScrollContainerProps {
   className?: string;
