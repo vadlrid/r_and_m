@@ -9,7 +9,10 @@ import { App } from './App.tsx';
 import { BASE_URL } from './config';
 import './index.scss';
 import { CharacterInfo } from './pages/characterInfo';
-import { CharactersList } from './pages/characterList';
+import {
+  CharactersList,
+  CharactersListStateProvider
+} from './pages/characterList';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,14 +22,16 @@ createRoot(document.getElementById('root')!).render(
       )}
     >
       <ApiProvider baseUrl={BASE_URL}>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<App />}>
-              <Route index element={<CharactersList />} />
-              <Route path='info/:cid' element={<CharacterInfo />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <CharactersListStateProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<App />}>
+                <Route index element={<CharactersList />} />
+                <Route path='info/:cid' element={<CharacterInfo />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CharactersListStateProvider>
       </ApiProvider>
     </ErrorBoundary>
   </StrictMode>

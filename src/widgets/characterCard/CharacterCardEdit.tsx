@@ -10,7 +10,7 @@ const StatusOption = ({ data }: SelectOptionProps<Status>) => {
   return (
     <div className='character-card__content__status'>
       {data.value}
-      <StatusCircle status={data.key} />
+      {!!data.key && <StatusCircle status={data.key} />}
     </div>
   );
 };

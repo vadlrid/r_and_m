@@ -15,7 +15,7 @@ export interface SelectProps<T extends string | number> {
   items?: KeyValue<T | null | undefined>[];
   placeholder?: string;
   selectedItem?: T;
-  onChange?: (value?: T | null) => void;
+  onChange?: (value?: T) => void;
   onTouch?: () => void;
   isInvalid?: boolean;
   OptionComponent?: React.FC<SelectOptionProps<T>>;
@@ -46,7 +46,7 @@ export const Select = <T extends string | number>({
 
   const handleSelect = useCallback(
     (item: KeyValue<T | null | undefined>) => {
-      onChange?.(item.key);
+      onChange?.(item.key ?? undefined);
       setIsOpen(false);
       onTouch?.();
     },

@@ -11,7 +11,7 @@ export const App = () => {
       <nav className='shadow side-bars'>
         <Logo />
       </nav>
-      <main className='side-bars'>
+      <main>
         <Outlet />
       </main>
       <footer className='shadow'>

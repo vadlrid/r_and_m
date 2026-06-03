@@ -33,26 +33,21 @@ const convertResponse = (
 const getErrorMessage = (error: AxiosError<{ error: string }>) =>
   error.response?.data?.error ?? '';
 
-export const useQueryCharacters = () => {
-  const { invokeRequest, data, isLoading } = useRequest({
+export const useQueryCharacters = (attempts: number) => {
+  const invokeRequest = useRequest({
     url: `/character`,
     method: HTTP_METHOD.GET,
+    attempts,
     convertResponse,
     getErrorMessage
   });
 
-  const queryCharacters = useCallback(
-    (query: CharacterSearchQuery) => {
+  return useCallback(
+    (page: number, query: CharacterSearchQuery) => {
       const name = query?.name?.trim()?.toLowerCase();
-      const params = { ...query, name };
-      invokeRequest({ params });
+      const params = { ...query, name, page };
+      return invokeRequest({ params });
     },
     [invokeRequest]
   );
-
-  return {
-    queryCharacters,
-    isLoading,
-    data
-  };
 };
