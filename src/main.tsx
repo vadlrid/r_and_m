@@ -6,7 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import { ApiProvider } from '@components/apiProvider';
 import { ErrorBoundary } from '@components/errorBoundary';
 import { App } from './App.tsx';
-import { BASE_URL } from './config';
+import { BASE_URL, REQUEST_ATTEMPTS } from './config';
 import './index.scss';
 import { CharacterInfo } from './pages/characterInfo';
 import {
@@ -21,7 +21,7 @@ createRoot(document.getElementById('root')!).render(
         <h1 className='global-error'>Oops! Something goes wrong...</h1>
       )}
     >
-      <ApiProvider baseUrl={BASE_URL}>
+      <ApiProvider baseUrl={BASE_URL} maxAttempts={REQUEST_ATTEMPTS}>
         <CharactersListStateProvider>
           <BrowserRouter>
             <Routes>

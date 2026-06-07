@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import type { AxiosError } from 'axios';
 import type {
   Character,
   CharacterResponse,
@@ -7,6 +6,7 @@ import type {
   PageData
 } from '@shared/domain';
 import { HTTP_METHOD, useRequest } from '@shared/hooks';
+import { convertCharacter, getErrorMessage } from './apiCommon';
 
 const convertResponse = (
   response?: PageData<CharacterResponse>
@@ -16,28 +16,14 @@ const convertResponse = (
   }
   return {
     ...response,
-    results: response.results.map(
-      ({ id, name, status, species, location, gender, image }) => ({
-        id,
-        name,
-        status,
-        species,
-        gender,
-        image,
-        location: location.name
-      })
-    )
+    results: response.results.map(convertCharacter)
   };
 };
 
-const getErrorMessage = (error: AxiosError<{ error: string }>) =>
-  error.response?.data?.error ?? '';
-
-export const useQueryCharacters = (attempts: number) => {
+export const useQueryCharacters = () => {
   const invokeRequest = useRequest({
     url: `/character`,
     method: HTTP_METHOD.GET,
-    attempts,
     convertResponse,
     getErrorMessage
   });

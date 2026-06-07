@@ -10,6 +10,7 @@ interface CharactersListState {
   changeQuery(query: CharacterSearchQuery): void;
   loadMore(): void;
   changeScrollTop(value: number): void;
+  updateCharacter(character: Character): void;
 }
 
 export const CharactersListStateContext = createContext<
