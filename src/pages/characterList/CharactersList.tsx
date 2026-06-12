@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { Indicator } from '@components/indicator';
 import { ScrollContainer } from '@components/scrollContainer';
@@ -11,11 +11,17 @@ import { CharactersListStateContext } from './CharactersListStateContext';
 
 export const CharactersList = () => {
   const navigate = useNavigate();
-
-  const handleOpen = (character: Character) =>
-    navigate(`/info/${character.id}`);
-
   const context = useContext(CharactersListStateContext);
+
+  const handleOpen = useCallback(
+    (character: Character) => navigate(`/info/${character.id}`),
+    [navigate]
+  );
+
+  const handleChange = useCallback(
+    (character: Character) => context?.updateCharacter(character),
+    [context]
+  );
 
   return (
     <ScrollContainer
@@ -45,6 +51,7 @@ export const CharactersList = () => {
                 className='list__item'
                 data={character}
                 onOpen={handleOpen}
+                onChange={handleChange}
               />
             ))}
             {context?.isLoading && (

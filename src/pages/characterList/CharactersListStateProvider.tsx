@@ -3,12 +3,10 @@ import { useQueryCharacters } from '@shared/apiHooks';
 import type { Character, CharacterSearchQuery, PageData } from '@shared/domain';
 import { CharactersListStateContext } from './CharactersListStateContext';
 
-const REQUEST_ATTEMPTS = 5;
-
 export const CharactersListStateProvider = ({
   children
 }: PropsWithChildren) => {
-  const queryCharacters = useQueryCharacters(REQUEST_ATTEMPTS);
+  const queryCharacters = useQueryCharacters();
 
   const [query, setQuery] = useState<CharacterSearchQuery>({});
   const [page, setPage] = useState(1);
@@ -63,6 +61,16 @@ export const CharactersListStateProvider = ({
 
   const changeScrollTop = (value: number) => setScrollTop(value);
 
+  const updateCharacter = (character: Character) => {
+    setList((characters) => {
+      const index = characters.findIndex((item) => item.id === character.id);
+      if (index < 0) {
+        return characters;
+      }
+      return characters.map((item, i) => (i === index ? character : item));
+    });
+  };
+
   return (
     <CharactersListStateContext.Provider
       value={{
@@ -73,7 +81,8 @@ export const CharactersListStateProvider = ({
         scrollTop,
         changeQuery,
         loadMore,
-        changeScrollTop
+        changeScrollTop,
+        updateCharacter
       }}
     >
       {children}

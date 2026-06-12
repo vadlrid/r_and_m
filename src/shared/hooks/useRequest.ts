@@ -50,7 +50,7 @@ export const useRequest = <
 >({
   url,
   method,
-  attempts = 1,
+  attempts,
   attemptsTimeout = 5000,
   convertResponse = (response: R) => response as unknown as T,
   getErrorMessage = (error: AxiosError) => error.response?.data as string
@@ -59,6 +59,10 @@ export const useRequest = <
   if (!apiConfig.baseUrl) {
     throw new Error('Base URL not provided');
   }
+  if (!attempts && !apiConfig.maxAttempts) {
+    throw new Error('Max attempts not provided');
+  }
+  const maxAttempts = attempts ?? apiConfig.maxAttempts;
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -95,7 +99,7 @@ export const useRequest = <
   );
 
   const invokeRequest = useCallback(
-    (invokeFetchParams: InvokeFetchParams<B>) => {
+    (invokeFetchParams: InvokeFetchParams<B> = {}) => {
       abortControllerRef.current?.abort();
       const controller = new AbortController();
       abortControllerRef.current = controller;
@@ -107,7 +111,7 @@ export const useRequest = <
           ...invokeFetchParams,
           abortSignal: controller.signal
         }).catch((err) => {
-          if (i < attempts) {
+          if (i < maxAttempts) {
             i++;
             return new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -140,7 +144,7 @@ export const useRequest = <
           });
       });
     },
-    [doRequest, attempts, attemptsTimeout, getErrorMessage]
+    [doRequest, maxAttempts, attemptsTimeout, getErrorMessage]
   );
 
   // Отменяем запрос через AbortController в случае unmount

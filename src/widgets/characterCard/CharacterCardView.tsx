@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import { StatusCircle } from '@components/statusCircle';
 import type { Character } from '@shared/domain';
 
@@ -7,32 +7,34 @@ interface CharacterCardViewProps {
   onOpen?: () => void;
 }
 
-export const CharacterCardView = ({ data, onOpen }: CharacterCardViewProps) => {
-  const handleClick = useCallback(() => onOpen?.(), [onOpen]);
-  return (
-    <>
-      <label className='character-card__content__title' onClick={handleClick}>
-        {data.name}
-      </label>
-      <div className='character-card__content__field-group'>
-        <label>Gender</label>
-        <div className='character-card__content__text'>{data.gender}</div>
-      </div>
-      <div className='character-card__content__field-group'>
-        <label>Species</label>
-        <div className='character-card__content__text'>{data.species}</div>
-      </div>
-      <div className='character-card__content__field-group'>
-        <label>Location</label>
-        <div className='character-card__content__text'>{data.location}</div>
-      </div>
-      <div className='character-card__content__field-group'>
-        <label>Status</label>
-        <div className='character-card__content__text character-card__content__status'>
-          {data.status}
-          <StatusCircle status={data.status} />
+export const CharacterCardView = memo(
+  ({ data, onOpen }: CharacterCardViewProps) => {
+    const handleClick = useCallback(() => onOpen?.(), [onOpen]);
+    return (
+      <>
+        <label className='character-card__title' onClick={handleClick}>
+          {data.name}
+        </label>
+        <div className='field-group'>
+          <label>Gender</label>
+          <div className='field-group__text'>{data.gender}</div>
         </div>
-      </div>
-    </>
-  );
-};
+        <div className='field-group'>
+          <label>Species</label>
+          <div className='field-group__text'>{data.species}</div>
+        </div>
+        <div className='character-card__content__field-group'>
+          <label>Location</label>
+          <div className='field-group__text'>{data.location}</div>
+        </div>
+        <div className='field-group'>
+          <label>Status</label>
+          <div className='field-group__status'>
+            {data.status}
+            <StatusCircle status={data.status} />
+          </div>
+        </div>
+      </>
+    );
+  }
+);
