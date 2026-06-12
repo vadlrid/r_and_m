@@ -1,0 +1,27 @@
+.not-found {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 7rem;
+
+  .img-title {
+    width: min(54rem, 100%);
+    min-height: 33.3rem;
+    background: url('../../assets/images/not_found.png') no-repeat center
+      center / contain;
+  }
+
+  .btn-main {
+    width: 24rem;
+    height: 5.6rem;
+    background: var(--color-white);
+    border: solid 0.1rem var(--color-btn-border);
+    border-radius: 0.8rem;
+    font-family: Karla, serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}

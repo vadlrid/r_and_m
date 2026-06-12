@@ -18,17 +18,21 @@ export const CharacterInfo = () => {
 
   useEffect(() => {
     let isIgnore = false;
-    getCharacter().then((response) => {
-      if (isIgnore) {
-        return;
-      }
-      setIsLoading(false);
-      setCharacter(response);
-    });
+    if (!isNaN(characterId)) {
+      getCharacter().then((response) => {
+        if (isIgnore) {
+          return;
+        }
+        setIsLoading(false);
+        setCharacter(response);
+      });
+    } else {
+      navigate('/404');
+    }
     return () => {
       isIgnore = true;
     };
-  }, [getCharacter, characterId]);
+  }, [getCharacter, characterId, navigate]);
 
   return (
     <div className='side-bars'>

@@ -13,6 +13,7 @@ import {
   CharactersList,
   CharactersListStateProvider
 } from './pages/characterList';
+import { NotFound } from './pages/notFound';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path='/' element={<App />}>
                 <Route index element={<CharactersList />} />
                 <Route path='info/:cid' element={<CharacterInfo />} />
+                <Route path='*' element={<NotFound />} />
               </Route>
             </Routes>
           </BrowserRouter>

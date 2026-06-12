@@ -3,6 +3,8 @@
     width: auto;
     min-height: calc(100vh - 13rem);
     padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
   }
 
   & > nav,
