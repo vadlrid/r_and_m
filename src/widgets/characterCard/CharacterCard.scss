@@ -39,6 +39,7 @@
     column-gap: 1.1rem;
 
     $content: '#{$main}__content';
+    $field-group: '.field-group';
 
     img {
       border-top-left-radius: 0.6rem;
@@ -50,14 +51,14 @@
       object-fit: none;
     }
 
-    #{$main}__content__field-group {
+    #{$field-group} {
       display: flex;
       flex-direction: column;
       height: 4.4rem;
       gap: 0.4rem;
     }
 
-    #{$main}__form-control {
+    #{$field-group}__form-control {
       margin-left: -0.6rem;
     }
 
@@ -69,7 +70,7 @@
       height: 1.7rem;
       letter-spacing: 0.025rem;
 
-      &#{$content}__title {
+      &#{$main}__title {
         width: 100%;
         height: 3.1rem;
         vertical-align: middle;
@@ -85,11 +86,11 @@
       }
     }
 
-    .input-field#{$content}__title {
+    .input-field#{$main}__title {
       margin-bottom: 0.4rem;
     }
 
-    #{$content}__text {
+    @mixin field-group-text {
       color: var(--color-text-inactive);
       height: 2.2rem;
       font-size: 1.4rem;
@@ -97,7 +98,13 @@
       font-weight: 400;
     }
 
-    #{$content}__status {
+    #{$field-group}__text {
+      @include field-group-text;
+    }
+
+    #{$field-group}__status {
+      @include field-group-text;
+
       display: flex;
       align-items: center;
       gap: 0.6rem;

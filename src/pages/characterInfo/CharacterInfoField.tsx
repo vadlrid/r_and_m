@@ -1,9 +1,9 @@
-interface CharacterInfoFieldProps<T extends string | number | boolean> {
+interface CharacterInfoFieldProps<T extends string> {
   label: string;
   value: T;
 }
 
-export const CharacterInfoField = <T extends string | number | boolean>({
+export const CharacterInfoField = <T extends string>({
   label,
   value
 }: CharacterInfoFieldProps<T>) => (

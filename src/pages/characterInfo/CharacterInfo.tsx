@@ -44,7 +44,7 @@ export const CharacterInfo = () => {
         )}
         {!!character && (
           <div className='character-info__content'>
-            <img src={character.image} />
+            <img src={character.image} alt={character.name} />
             <h2>{character.name}</h2>
             <h4>Information</h4>
             <section className='fields-form'>

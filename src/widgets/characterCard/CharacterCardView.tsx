@@ -12,24 +12,24 @@ export const CharacterCardView = memo(
     const handleClick = useCallback(() => onOpen?.(), [onOpen]);
     return (
       <>
-        <label className='character-card__content__title' onClick={handleClick}>
+        <label className='character-card__title' onClick={handleClick}>
           {data.name}
         </label>
-        <div className='character-card__content__field-group'>
+        <div className='field-group'>
           <label>Gender</label>
-          <div className='character-card__content__text'>{data.gender}</div>
+          <div className='field-group__text'>{data.gender}</div>
         </div>
-        <div className='character-card__content__field-group'>
+        <div className='field-group'>
           <label>Species</label>
-          <div className='character-card__content__text'>{data.species}</div>
+          <div className='field-group__text'>{data.species}</div>
         </div>
         <div className='character-card__content__field-group'>
           <label>Location</label>
-          <div className='character-card__content__text'>{data.location}</div>
+          <div className='field-group__text'>{data.location}</div>
         </div>
-        <div className='character-card__content__field-group'>
+        <div className='field-group'>
           <label>Status</label>
-          <div className='character-card__content__text character-card__content__status'>
+          <div className='field-group__status'>
             {data.status}
             <StatusCircle status={data.status} />
           </div>
