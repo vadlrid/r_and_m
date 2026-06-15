@@ -4,6 +4,7 @@ import {
   AxiosError,
   type AxiosRequestConfig,
   type AxiosResponse,
+  HttpStatusCode,
   default as axios
 } from 'axios';
 import { useApiConfig } from './useApiConfig';
@@ -21,12 +22,15 @@ interface UseRequestProps<T, R, E> {
   method: HTTP_METHOD;
   attempts?: number;
   attemptsTimeout?: number;
-  convertResponse?: (response: R) => T;
-  getErrorMessage?: (error: AxiosError<E>) => string;
+  convertResponse?(response: R): T;
+  handleError?(error: AxiosError<E>): boolean;
+  getErrorMessage?(error: AxiosError<E>): string;
 }
 
 type RequestBody = Record<string, unknown> | undefined;
 type QueryParams = Record<string, string | number | null | undefined>;
+
+const DONT_RETRY_FOR = new Set([HttpStatusCode.NotFound]);
 
 interface InvokeFetchParams<B extends RequestBody> {
   params?: QueryParams;
@@ -42,6 +46,12 @@ interface InvokeFetchParamsWithAbortSignal<
   abortSignal: AbortSignal;
 }
 
+const DEFAULT_CONVERT_RESPONSE = <T, R = T>(response: R) =>
+  response as unknown as T;
+const DEFAULT_HANDLER_ERROR = () => false;
+const DEFAULT_GET_ERROR_MESSAGE = (error: AxiosError) =>
+  error.response?.data as string;
+
 export const useRequest = <
   T,
   B extends RequestBody = undefined,
@@ -52,8 +62,9 @@ export const useRequest = <
   method,
   attempts,
   attemptsTimeout = 5000,
-  convertResponse = (response: R) => response as unknown as T,
-  getErrorMessage = (error: AxiosError) => error.response?.data as string
+  convertResponse = DEFAULT_CONVERT_RESPONSE<T, R>,
+  handleError = DEFAULT_HANDLER_ERROR,
+  getErrorMessage = DEFAULT_GET_ERROR_MESSAGE
 }: UseRequestProps<T, R, E>) => {
   const apiConfig = useApiConfig();
   if (!apiConfig.baseUrl) {
@@ -111,6 +122,14 @@ export const useRequest = <
           ...invokeFetchParams,
           abortSignal: controller.signal
         }).catch((err) => {
+          if (
+            err instanceof AxiosError &&
+            !!err.status &&
+            DONT_RETRY_FOR.has(err.status)
+          ) {
+            return Promise.reject(err);
+          }
+
           if (i < maxAttempts) {
             i++;
             return new Promise((resolve, reject) => {
@@ -129,6 +148,12 @@ export const useRequest = <
             let errorMessage: string | undefined;
 
             if (err instanceof AxiosError) {
+              // Если ошибка обработана внешним обработчиком - выходим
+              if (handleError(err)) {
+                resolve(undefined);
+                return;
+              }
+
               errorMessage = getErrorMessage(err);
             }
 
@@ -144,7 +169,7 @@ export const useRequest = <
           });
       });
     },
-    [doRequest, maxAttempts, attemptsTimeout, getErrorMessage]
+    [doRequest, maxAttempts, attemptsTimeout, getErrorMessage, handleError]
   );
 
   // Отменяем запрос через AbortController в случае unmount
