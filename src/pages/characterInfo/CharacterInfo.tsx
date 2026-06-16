@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { type AxiosError, HttpStatusCode } from 'axios';
 import { ArrowBack } from '@components/icons';
 import { Indicator } from '@components/indicator';
 import { useGetCharacter } from '@shared/apiHooks';
@@ -14,7 +15,23 @@ export const CharacterInfo = () => {
 
   const { cid } = useParams();
   const characterId = Number(cid);
-  const getCharacter = useGetCharacter(characterId);
+
+  const openNotFound = useCallback(() => {
+    navigate('/404');
+  }, [navigate]);
+
+  const handleNotFound = useCallback(
+    (error: AxiosError) => {
+      if (error.status === HttpStatusCode.NotFound) {
+        openNotFound();
+        return true;
+      }
+      return false;
+    },
+    [openNotFound]
+  );
+
+  const getCharacter = useGetCharacter(characterId, handleNotFound);
 
   useEffect(() => {
     let isIgnore = false;
@@ -27,12 +44,12 @@ export const CharacterInfo = () => {
         setCharacter(response);
       });
     } else {
-      navigate('/404');
+      openNotFound();
     }
     return () => {
       isIgnore = true;
     };
-  }, [getCharacter, characterId, navigate]);
+  }, [getCharacter, characterId, openNotFound]);
 
   return (
     <div className='side-bars'>
@@ -48,7 +65,7 @@ export const CharacterInfo = () => {
         )}
         {!!character && (
           <div className='character-info__content'>
-            <img src={character.image} alt={character.name} />
+            <img src={character.image} alt="Character's image" />
             <h2>{character.name}</h2>
             <h4>Information</h4>
             <section className='fields-form'>

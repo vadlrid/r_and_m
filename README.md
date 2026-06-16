@@ -1,6 +1,12 @@
 # Rick and Morty Characters
 
-React-приложение для просмотра персонажей вселенной Rick and Morty. Данные загружаются из публичного [Rick and Morty API](https://rickandmortyapi.com/).
+![Version](https://img.shields.io/github/v/tag/vadlrid/r_and_m)
+
+React-приложение для просмотра персонажей вселенной Rick and Morty. 
+
+Ссылка на приложение https://vadlrid.github.io/r_and_m/
+
+Данные загружаются из публичного [Rick and Morty API](https://rickandmortyapi.com/).
 
 ## Возможности
 

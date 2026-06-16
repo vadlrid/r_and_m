@@ -49,7 +49,7 @@ export const CharacterCard = memo(
           />
         )}
         <div className='character-card__content'>
-          <img role='button' src={data.image} />
+          <img role='button' alt="Character's image" src={data.image} />
           {isEditMode ? (
             <CharacterCardEdit form={form} />
           ) : (

@@ -35,7 +35,7 @@
 
   #{$main}__content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, calc(50% - 0.55rem));
     column-gap: 1.1rem;
 
     $content: '#{$main}__content';
@@ -96,6 +96,9 @@
       font-size: 1.4rem;
       line-height: 2.1rem;
       font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     #{$field-group}__text {
