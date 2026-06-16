@@ -8,27 +8,27 @@ import './InputField.scss';
 export interface InputFieldProps {
   className?: string;
   value?: string;
-  onChange?: (value: string) => void;
-  onTouch?: () => void;
   isDisabled?: boolean;
   placeholder?: string;
   Prefix?: React.FC;
   size?: Size;
   hasBorder?: boolean;
   isInvalid?: boolean;
+  onChange?(value: string): void;
+  onTouch?(): void;
 }
 
 export const InputField = ({
   className: externalClassName,
   value,
-  onChange,
-  onTouch,
   isDisabled,
   placeholder,
   Prefix,
   size = Size.LARGE,
   hasBorder,
-  isInvalid
+  isInvalid,
+  onChange,
+  onTouch
 }: InputFieldProps) => {
   const handleTouch = useCallback(() => {
     onTouch?.();

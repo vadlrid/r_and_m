@@ -10,8 +10,8 @@ import { useCharacterForm } from './CharacterForm.ts';
 interface CharacterCardProps {
   className?: string;
   data: Character;
-  onChange?: (data: Character) => void;
-  onOpen?: (data: Character) => void;
+  onChange?(data: Character): void;
+  onOpen?(data: Character): void;
 }
 
 export const CharacterCard = memo(

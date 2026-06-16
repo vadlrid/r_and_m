@@ -18,6 +18,11 @@
     align-items: center;
     position: relative;
     z-index: 2;
+
+    svg {
+      width: 4.8rem;
+      height: 5rem;
+    }
   }
 
   & > footer {

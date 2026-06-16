@@ -1,0 +1,25 @@
+@use 'sass:map';
+
+$width-large: 1060px;
+$width-medium: 860px;
+$width-small: 680px;
+
+@function width-size($width, $font-size) {
+  @return (max-width: $width - 1px, font-size: $font-size);
+}
+
+$sizes: (
+  large: width-size($width-large, 8px),
+  medium: width-size($width-medium, 6px),
+  small: width-size($width-small, 4px)
+);
+
+@mixin media-queries {
+  @each $name, $size in $sizes {
+    @media screen and (max-width: map.get($size, 'max-width')) {
+      html {
+        font-size: map.get($size, 'font-size');
+      }
+    }
+  }
+}

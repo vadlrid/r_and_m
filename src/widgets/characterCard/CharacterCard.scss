@@ -1,3 +1,5 @@
+@use '@styles/sizes' as s;
+
 .character-card {
   background: var(--color-white);
   width: 49.5rem;
@@ -48,7 +50,10 @@
       height: calc(100% - 0.6rem);
       min-height: 23.6rem;
       grid-row: 1/6;
-      object-fit: none;
+
+      @media screen and (min-width: s.$width-large) {
+        object-fit: none;
+      }
     }
 
     #{$field-group} {

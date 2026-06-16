@@ -59,6 +59,12 @@ npm run build
 Проверяет TypeScript-проект и собирает production-бандл.
 
 ```bash
+npm run analyze 
+```
+
+Собирает production-бандл и анализирует его при помощи плагина `vite-bundle-analyzer`
+
+```bash
 npm run preview
 ```
 

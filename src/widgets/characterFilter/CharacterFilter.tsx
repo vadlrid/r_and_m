@@ -15,7 +15,7 @@ import { classNames } from '@shared/utils';
 interface CharacterFilterProps {
   className?: string;
   query?: CharacterSearchQuery;
-  onQueryChange?: (query: CharacterSearchQuery) => void;
+  onQueryChange?(query: CharacterSearchQuery): void;
 }
 
 const areQueriesEqual = (
