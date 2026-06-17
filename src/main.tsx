@@ -7,13 +7,13 @@ import { ApiProvider } from '@components/apiProvider';
 import { ErrorBoundary } from '@components/errorBoundary';
 import { App } from './App.tsx';
 import { API_BASE_URL, REQUEST_ATTEMPTS } from './config';
-import './index.scss';
 import { CharacterInfo } from './pages/characterInfo';
 import {
   CharactersList,
   CharactersListStateProvider
 } from './pages/characterList';
 import { NotFound } from './pages/notFound';
+import './styles/index.scss';
 
 const APP_BASE_URL = import.meta.env.BASE_URL;
 

@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    #todo Поменять потом на master
-    branches: [feature/not-found-page-and-deploy]
+    tags:
+      - 'v*'
 
 concurrency:
   group: pages

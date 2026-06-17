@@ -1,3 +1,5 @@
+@use '@styles/sizes' as s;
+
 .character-card {
   background: var(--color-white);
   width: 49.5rem;
@@ -35,7 +37,7 @@
 
   #{$main}__content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, calc(50% - 0.55rem));
     column-gap: 1.1rem;
 
     $content: '#{$main}__content';
@@ -48,7 +50,10 @@
       height: calc(100% - 0.6rem);
       min-height: 23.6rem;
       grid-row: 1/6;
-      object-fit: none;
+
+      @media screen and (min-width: s.$width-large) {
+        object-fit: none;
+      }
     }
 
     #{$field-group} {
@@ -96,6 +101,9 @@
       font-size: 1.4rem;
       line-height: 2.1rem;
       font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     #{$field-group}__text {

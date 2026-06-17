@@ -15,11 +15,11 @@ export interface SelectProps<T extends string | number> {
   items?: KeyValue<T | null | undefined>[];
   placeholder?: string;
   selectedItem?: T;
-  onChange?: (value?: T) => void;
-  onTouch?: () => void;
   isInvalid?: boolean;
   OptionComponent?: React.FC<SelectOptionProps<T>>;
   hasEmptyOption?: boolean;
+  onChange?(value?: T): void;
+  onTouch?(): void;
 }
 
 export const Select = <T extends string | number>({
@@ -28,11 +28,11 @@ export const Select = <T extends string | number>({
   items,
   placeholder,
   selectedItem,
-  onChange,
-  onTouch,
   isInvalid,
   OptionComponent = DefaultSelectOption<T>,
-  hasEmptyOption
+  hasEmptyOption,
+  onChange,
+  onTouch
 }: SelectProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
 

@@ -4,7 +4,7 @@ import type { Character } from '@shared/domain';
 
 interface CharacterCardViewProps {
   data: Character;
-  onOpen?: () => void;
+  onOpen?(): void;
 }
 
 export const CharacterCardView = memo(

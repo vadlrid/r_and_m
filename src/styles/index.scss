@@ -1,3 +1,4 @@
+@use 'sizes' as s;
 @import 'reset.css';
 
 :root {
@@ -52,3 +53,5 @@ h3 {
   padding-left: 19.8rem;
   padding-right: 19.8rem;
 }
+
+@include s.media-queries;

@@ -10,8 +10,8 @@ import { useCharacterForm } from './CharacterForm.ts';
 interface CharacterCardProps {
   className?: string;
   data: Character;
-  onChange?: (data: Character) => void;
-  onOpen?: (data: Character) => void;
+  onChange?(data: Character): void;
+  onOpen?(data: Character): void;
 }
 
 export const CharacterCard = memo(
@@ -49,7 +49,7 @@ export const CharacterCard = memo(
           />
         )}
         <div className='character-card__content'>
-          <img role='button' src={data.image} />
+          <img role='button' alt="Character's image" src={data.image} />
           {isEditMode ? (
             <CharacterCardEdit form={form} />
           ) : (

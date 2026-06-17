@@ -2,7 +2,7 @@ import { Size } from '@shared/types';
 import { classNames } from '@shared/utils';
 import './Indicator.scss';
 
-interface IIndicatorProps {
+interface IndicatorProps {
   className?: string;
   size?: Size;
   title?: string;
@@ -12,7 +12,7 @@ export const Indicator = ({
   className: externalClassName,
   size,
   title
-}: IIndicatorProps) => {
+}: IndicatorProps) => {
   size = size ?? Size.LARGE;
   return (
     <>
