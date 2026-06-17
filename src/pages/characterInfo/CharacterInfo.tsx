@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useTransition } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { type AxiosError, HttpStatusCode } from 'axios';
 import { ArrowBack } from '@components/icons';
@@ -10,7 +10,7 @@ import { CharacterInfoField } from './CharacterInfoField';
 
 export const CharacterInfo = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, startTransition] = useTransition();
   const [character, setCharacter] = useState<Character | undefined>(undefined);
 
   const { cid } = useParams();
@@ -36,12 +36,12 @@ export const CharacterInfo = () => {
   useEffect(() => {
     let isIgnore = false;
     if (!isNaN(characterId)) {
-      getCharacter().then((response) => {
+      startTransition(async () => {
+        const character = await getCharacter();
         if (isIgnore) {
           return;
         }
-        setIsLoading(false);
-        setCharacter(response);
+        setCharacter(character);
       });
     } else {
       openNotFound();
