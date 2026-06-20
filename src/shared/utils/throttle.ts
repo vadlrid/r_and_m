@@ -1,7 +1,9 @@
-type CallbackFn = (...args: unknown[]) => void;
-export const throttle = (callee: CallbackFn, timeout: number): CallbackFn => {
+export const throttle = <T extends (...args: Parameters<T>) => void>(
+  callee: T,
+  timeout: number
+) => {
   let timerId: number | null = null;
-  return function (...args: unknown[]) {
+  return function (...args: Parameters<T>) {
     if (timerId) {
       return;
     }

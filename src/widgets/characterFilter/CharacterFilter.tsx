@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useState, useTransition } from 'react';
 import { Search } from '@components/icons';
 import { InputField } from '@components/inputField';
 import { Select } from '@components/select';
@@ -8,9 +8,10 @@ import {
   LIST_SPECIES,
   LIST_STATUS
 } from '@shared/domain';
-import { useDebounce } from '@shared/hooks';
 import { Size } from '@shared/types';
-import { classNames } from '@shared/utils';
+import { classNames, debounce } from '@shared/utils';
+
+const DEBOUNCE_TIMEOUT = 300;
 
 interface CharacterFilterProps {
   className?: string;
@@ -55,12 +56,18 @@ export const CharacterFilter = ({
     [query, onQueryChange]
   );
 
-  const [name, setName] = useState<string | undefined>(query.name);
-  const debouncedName = useDebounce(name);
+  const handleQueryChangeDebounced = useMemo(
+    () => debounce(handleQueryChange, DEBOUNCE_TIMEOUT),
+    [handleQueryChange]
+  );
 
-  useEffect(() => {
-    handleQueryChange({ name: debouncedName });
-  }, [debouncedName, handleQueryChange]);
+  const [, startTransition] = useTransition();
+  const [name, setName] = useState<string | undefined>(query.name);
+
+  const handleNameChange = (name: string) => {
+    setName(name);
+    startTransition(() => handleQueryChangeDebounced({ name }));
+  };
 
   return (
     <section className={classNames(externalClassName, 'character-filter')}>
@@ -70,7 +77,7 @@ export const CharacterFilter = ({
         Prefix={Search}
         placeholder='Filter by name...'
         value={name}
-        onChange={setName}
+        onChange={handleNameChange}
       />
       <Select
         size={Size.LARGE}
