@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
+import { HTTP_METHOD, convertCharacter, getErrorMessage } from '@shared/api';
 import type {
   Character,
   CharacterResponse,
   CharacterSearchQuery,
   PageData
 } from '@shared/domain';
-import { HTTP_METHOD, useRequest } from '@shared/hooks';
-import { convertCharacter, getErrorMessage } from './apiCommon';
+import { useRequest } from '@shared/hooks';
 
 const convertResponse = (
   response?: PageData<CharacterResponse>

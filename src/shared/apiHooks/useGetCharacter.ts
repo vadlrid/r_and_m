@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios';
-import { HTTP_METHOD, useRequest } from '@shared/hooks';
-import { convertCharacter, getErrorMessage } from './apiCommon';
+import { HTTP_METHOD, convertCharacter, getErrorMessage } from '@shared/api';
+import { useRequest } from '@shared/hooks';
 
 export const useGetCharacter = (
   id: number,
