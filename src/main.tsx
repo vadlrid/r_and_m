@@ -2,16 +2,15 @@ import '@fontsource/karla/index.css';
 import '@fontsource/roboto/index.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { ApiProvider } from '@components/apiProvider';
 import { ErrorBoundary } from '@components/errorBoundary';
+import { store } from '@store/root';
 import { App } from './App.tsx';
 import { API_BASE_URL, REQUEST_ATTEMPTS } from './config';
 import { CharacterInfo } from './pages/characterInfo';
-import {
-  CharactersList,
-  CharactersListStateProvider
-} from './pages/characterList';
+import { CharactersList } from './pages/characterList';
 import { NotFound } from './pages/notFound';
 import './styles/index.scss';
 
@@ -32,7 +31,7 @@ createRoot(document.getElementById('root')!).render(
       )}
     >
       <ApiProvider baseUrl={API_BASE_URL} maxAttempts={REQUEST_ATTEMPTS}>
-        <CharactersListStateProvider>
+        <Provider store={store}>
           <BrowserRouter basename={APP_BASE_URL}>
             <Routes>
               <Route path='/' element={<App />}>
@@ -42,7 +41,7 @@ createRoot(document.getElementById('root')!).render(
               </Route>
             </Routes>
           </BrowserRouter>
-        </CharactersListStateProvider>
+        </Provider>
       </ApiProvider>
     </ErrorBoundary>
   </StrictMode>

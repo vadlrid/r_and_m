@@ -1,17 +1,25 @@
-import { useCallback, useEffect, useState, useTransition } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { type AxiosError, HttpStatusCode } from 'axios';
 import { ArrowBack } from '@components/icons';
 import { Indicator } from '@components/indicator';
-import { useGetCharacter } from '@shared/apiHooks';
-import type { Character } from '@shared/domain';
+import { getCharacter } from '@store/characterInfo';
+import { useAppDispatch, useAppSelector } from '@store/root';
 import './CharacterInfo.scss';
 import { CharacterInfoField } from './CharacterInfoField';
 
 export const CharacterInfo = () => {
   const navigate = useNavigate();
-  const [isLoading, startTransition] = useTransition();
-  const [character, setCharacter] = useState<Character | undefined>(undefined);
+
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(
+    ({ characterInfo }) => characterInfo.isLoading
+  );
+  const character = useAppSelector(
+    ({ characterInfo }) => characterInfo.character
+  );
+  const notFound = useAppSelector(
+    ({ characterInfo }) => characterInfo.notFound
+  );
 
   const { cid } = useParams();
   const characterId = Number(cid);
@@ -20,36 +28,15 @@ export const CharacterInfo = () => {
     navigate('/404');
   }, [navigate]);
 
-  const handleNotFound = useCallback(
-    (error: AxiosError) => {
-      if (error.status === HttpStatusCode.NotFound) {
-        openNotFound();
-        return true;
-      }
-      return false;
-    },
-    [openNotFound]
-  );
-
-  const getCharacter = useGetCharacter(characterId, handleNotFound);
-
   useEffect(() => {
-    let isIgnore = false;
-    if (!isNaN(characterId)) {
-      startTransition(async () => {
-        const character = await getCharacter();
-        if (isIgnore) {
-          return;
-        }
-        setCharacter(character);
-      });
-    } else {
+    if (isNaN(characterId) || notFound) {
       openNotFound();
+      return;
     }
-    return () => {
-      isIgnore = true;
-    };
-  }, [getCharacter, characterId, openNotFound]);
+
+    const promise = dispatch(getCharacter(characterId));
+    return () => promise.abort();
+  }, [dispatch, notFound, characterId, openNotFound]);
 
   return (
     <div className='side-bars'>

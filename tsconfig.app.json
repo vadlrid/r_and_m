@@ -24,7 +24,8 @@
     "paths": {
       "@components/*": ["./src/components/*"],
       "@widgets/*": ["./src/widgets/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "@store/*": ["./src/store/*"]
     }
   },
   "include": ["src"]

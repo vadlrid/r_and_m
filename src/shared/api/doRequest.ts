@@ -77,7 +77,9 @@ export const doRequest = async <T, R, E>({
         !!err.status &&
         DONT_RETRY_FOR.has(err.status)
       ) {
-        throw err;
+        if (handleError(err)) {
+          throw err;
+        }
       }
 
       currentAttempts++;
@@ -88,7 +90,7 @@ export const doRequest = async <T, R, E>({
         if (err instanceof AxiosError) {
           // Если ошибка обработана внешним обработчиком - выходим
           if (handleError(err)) {
-            return undefined;
+            throw err;
           }
 
           errorMessage = getErrorMessage(err);
@@ -102,7 +104,7 @@ export const doRequest = async <T, R, E>({
           toast.error(errorMessage);
         }
 
-        return undefined;
+        throw err;
       }
 
       await new Promise((resolve) => setTimeout(resolve, attemptsTimeout));

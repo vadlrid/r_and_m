@@ -1,3 +1,4 @@
+import type { AxiosError } from 'axios';
 import type {
   Character,
   CharacterResponse,
@@ -7,21 +8,37 @@ import type {
 import { convertCharacter, getErrorMessage } from './apiCommon';
 import { HTTP_METHOD, doRequest } from './doRequest';
 
-const APP_BASE_URL = import.meta.env.BASE_URL;
+export const API_BASE_URL = 'https://rickandmortyapi.com/api';
+export const REQUEST_ATTEMPTS = 5;
 
 class CharactersApi {
-  constructor(private baseUrl: string) {}
+  constructor(
+    private baseUrl: string,
+    private maxAttempts: number
+  ) {}
+
+  private handleError?: (error: AxiosError) => boolean;
+
+  overrideHandleError(handleError: (error: AxiosError) => boolean): this {
+    this.handleError = handleError;
+    return this;
+  }
 
   async getCharacter(
     id: number,
     signal?: AbortSignal
   ): Promise<Character | undefined> {
+    const handleError = this.handleError;
+    this.handleError = undefined;
+
     return await doRequest<Character, CharacterResponse, { error: string }>({
       url: `/character/${id}`,
       method: HTTP_METHOD.GET,
       baseUrl: this.baseUrl,
+      maxAttempts: this.maxAttempts,
       convertResponse: convertCharacter,
       getErrorMessage,
+      handleError,
       signal
     });
   }
@@ -34,6 +51,9 @@ class CharactersApi {
     const name = query?.name?.trim()?.toLowerCase();
     const params = { ...query, name, page };
 
+    const handleError = this.handleError;
+    this.handleError = undefined;
+
     return await doRequest<
       PageData<Character>,
       PageData<CharacterResponse>,
@@ -42,6 +62,7 @@ class CharactersApi {
       url: `/character`,
       method: HTTP_METHOD.GET,
       baseUrl: this.baseUrl,
+      maxAttempts: this.maxAttempts,
       convertResponse: (
         response: PageData<CharacterResponse>
       ): PageData<Character> => ({
@@ -49,10 +70,11 @@ class CharactersApi {
         results: response.results.map(convertCharacter)
       }),
       getErrorMessage,
+      handleError,
       params,
       signal
     });
   }
 }
 
-export const CHARACTERS_API = new CharactersApi(APP_BASE_URL);
+export const CHARACTERS_API = new CharactersApi(API_BASE_URL, REQUEST_ATTEMPTS);
