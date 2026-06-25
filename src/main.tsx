@@ -4,11 +4,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import { ApiProvider } from '@components/apiProvider';
 import { ErrorBoundary } from '@components/errorBoundary';
 import { store } from '@store/root';
 import { App } from './App.tsx';
-import { API_BASE_URL, REQUEST_ATTEMPTS } from './config';
 import { CharacterInfo } from './pages/characterInfo';
 import { CharactersList } from './pages/characterList';
 import { NotFound } from './pages/notFound';
@@ -30,19 +28,17 @@ createRoot(document.getElementById('root')!).render(
         <h1 className='global-error'>Oops! Something goes wrong...</h1>
       )}
     >
-      <ApiProvider baseUrl={API_BASE_URL} maxAttempts={REQUEST_ATTEMPTS}>
-        <Provider store={store}>
-          <BrowserRouter basename={APP_BASE_URL}>
-            <Routes>
-              <Route path='/' element={<App />}>
-                <Route index element={<CharactersList />} />
-                <Route path='info/:cid' element={<CharacterInfo />} />
-                <Route path='*' element={<NotFound />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </Provider>
-      </ApiProvider>
+      <Provider store={store}>
+        <BrowserRouter basename={APP_BASE_URL}>
+          <Routes>
+            <Route path='/' element={<App />}>
+              <Route index element={<CharactersList />} />
+              <Route path='info/:cid' element={<CharacterInfo />} />
+              <Route path='*' element={<NotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </ErrorBoundary>
   </StrictMode>
 );

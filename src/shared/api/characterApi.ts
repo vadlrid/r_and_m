@@ -6,10 +6,8 @@ import type {
   PageData
 } from '@shared/domain';
 import { convertCharacter, getErrorMessage } from './apiCommon';
+import { API_BASE_URL, REQUEST_ATTEMPTS } from './characterApiConfig';
 import { HTTP_METHOD, doRequest } from './doRequest';
-
-export const API_BASE_URL = 'https://rickandmortyapi.com/api';
-export const REQUEST_ATTEMPTS = 5;
 
 class CharactersApi {
   constructor(
