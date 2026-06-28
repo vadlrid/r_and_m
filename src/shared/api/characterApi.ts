@@ -7,7 +7,7 @@ import type {
 } from '@shared/domain';
 import { convertCharacter, getErrorMessage } from './apiCommon';
 import { API_BASE_URL, REQUEST_ATTEMPTS } from './characterApiConfig';
-import { HTTP_METHOD, doRequest } from './doRequest';
+import { type DoRequestProps, HTTP_METHOD, doRequest } from './doRequest';
 
 class CharactersApi {
   constructor(
@@ -22,6 +22,17 @@ class CharactersApi {
     return this;
   }
 
+  private getRequest<T, R, E>(
+    params: Omit<DoRequestProps<T, R, E>, 'method' | 'baseUrl' | 'maxAttempts'>
+  ): Promise<T | undefined> {
+    return doRequest<T, R, E>({
+      ...params,
+      method: HTTP_METHOD.GET,
+      baseUrl: this.baseUrl,
+      maxAttempts: this.maxAttempts
+    });
+  }
+
   async getCharacter(
     id: number,
     signal?: AbortSignal
@@ -29,11 +40,12 @@ class CharactersApi {
     const handleError = this.handleError;
     this.handleError = undefined;
 
-    return await doRequest<Character, CharacterResponse, { error: string }>({
+    return await this.getRequest<
+      Character,
+      CharacterResponse,
+      { error: string }
+    >({
       url: `/character/${id}`,
-      method: HTTP_METHOD.GET,
-      baseUrl: this.baseUrl,
-      maxAttempts: this.maxAttempts,
       convertResponse: convertCharacter,
       getErrorMessage,
       handleError,
@@ -52,15 +64,12 @@ class CharactersApi {
     const handleError = this.handleError;
     this.handleError = undefined;
 
-    return await doRequest<
+    return this.getRequest<
       PageData<Character>,
       PageData<CharacterResponse>,
       { error: string }
     >({
       url: `/character`,
-      method: HTTP_METHOD.GET,
-      baseUrl: this.baseUrl,
-      maxAttempts: this.maxAttempts,
       convertResponse: (
         response: PageData<CharacterResponse>
       ): PageData<Character> => ({

@@ -42,15 +42,13 @@ const characterInfoSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCharacter.pending, (state, action) => {
-        console.log('REQUEST START', action);
+      .addCase(getCharacter.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getCharacter.fulfilled, (state, action) => {
         if (!action.payload) {
           return;
         }
-        console.log('SUCCESS', action);
         state.character = action.payload;
         state.isLoading = false;
       })

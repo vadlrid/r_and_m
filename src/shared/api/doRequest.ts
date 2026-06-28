@@ -14,7 +14,7 @@ export enum HTTP_METHOD {
   DELETE = 'DELETE'
 }
 
-interface DoRequestProps<T, R, E> {
+export interface DoRequestProps<T, R, E> {
   url: string;
   method: HTTP_METHOD;
   baseUrl: string;
@@ -42,9 +42,7 @@ export const doRequest = async <T, R, E>({
   params,
   data,
   signal
-}: DoRequestProps<T, R, E> & { signal?: AbortSignal }): Promise<
-  T | undefined
-> => {
+}: DoRequestProps<T, R, E>): Promise<T | undefined> => {
   let currentAttempts = 0;
 
   const doSingleRequest = async (): Promise<T | undefined> => {
