@@ -4,57 +4,45 @@ import { Indicator } from '@components/indicator';
 import { ScrollContainer } from '@components/scrollContainer';
 import { CharacterCard } from '@widgets/characterCard';
 import { CharacterFilter } from '@widgets/characterFilter';
-import type { Character, CharacterSearchQuery } from '@shared/domain';
+import type { Character } from '@shared/domain';
 import { Size } from '@shared/types';
-import {
-  changeQuery,
-  loadMore,
-  setScrollTop,
-  updateCharacter
-} from '@store/characters';
-import { useAppDispatch, useAppSelector } from '@store/root';
+import { useCharactersStore } from '@store/characters';
 import './CharactersList.scss';
 
 export const CharactersList = () => {
   const navigate = useNavigate();
 
-  const dispatch = useAppDispatch();
-
-  const scrollTop = useAppSelector(({ characters }) => characters.scrollTop);
-  const query = useAppSelector(({ characters }) => characters.query);
-  const list = useAppSelector(({ characters }) => characters.list);
-  const isLoading = useAppSelector(({ characters }) => characters.isLoading);
-  const canNext = useAppSelector(({ characters }) => characters.canNext);
-  const isSuccess = useAppSelector(({ characters }) => characters.isSuccess);
-  const notFound = useAppSelector(({ characters }) => characters.notFound);
-  const isFirstLoad = useAppSelector(
-    ({ characters }) => characters.isFirstLoad
-  );
+  const scrollTop = useCharactersStore((state) => state.scrollTop);
+  const query = useCharactersStore((state) => state.query);
+  const list = useCharactersStore((state) => state.list);
+  const isLoading = useCharactersStore((state) => state.isLoading);
+  const canNext = useCharactersStore((state) => state.canNext);
+  const isSuccess = useCharactersStore((state) => state.isSuccess);
+  const notFound = useCharactersStore((state) => state.notFound);
+  const isFirstLoad = useCharactersStore((state) => state.isFirstLoad);
 
   const handleOpen = (character: Character) =>
     navigate(`/info/${character.id}`);
-  const handleChange = (character: Character) =>
-    dispatch(updateCharacter(character));
-  const handleScrollTopChange = (scrollTop: number) =>
-    dispatch(setScrollTop(scrollTop));
+  const handleChange = useCharactersStore((state) => state.updateCharacter);
+  const handleScrollTopChange = useCharactersStore(
+    (state) => state.setScrollTop
+  );
+  const loadMore = useCharactersStore((state) => state.loadMore);
+  const changeQuery = useCharactersStore((state) => state.changeQuery);
 
   const handleBottomReach = () => {
     if (isLoading || !canNext || !isSuccess) {
       return;
     }
-    dispatch(loadMore());
-  };
-
-  const handleQueryChange = (query: CharacterSearchQuery) => {
-    dispatch(changeQuery(query));
+    loadMore();
   };
 
   // Вызов первой загрузки
   useEffect(() => {
     if (isFirstLoad) {
-      dispatch(changeQuery({}));
+      changeQuery({});
     }
-  }, [dispatch, isFirstLoad]);
+  }, [changeQuery, isFirstLoad]);
 
   useEffect(() => {
     if (notFound) {
@@ -74,7 +62,7 @@ export const CharactersList = () => {
         <CharacterFilter
           className='list__filter'
           query={query}
-          onQueryChange={handleQueryChange}
+          onQueryChange={changeQuery}
         />
         {!list?.length && isLoading ? (
           <Indicator

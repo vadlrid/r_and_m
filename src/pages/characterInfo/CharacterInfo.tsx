@@ -2,23 +2,19 @@ import { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ArrowBack } from '@components/icons';
 import { Indicator } from '@components/indicator';
-import { getCharacter } from '@store/characterInfo';
-import { useAppDispatch, useAppSelector } from '@store/root';
+import { useCharacterInfoStore } from '@store/characterInfo';
 import './CharacterInfo.scss';
 import { CharacterInfoField } from './CharacterInfoField';
 
 export const CharacterInfo = () => {
   const navigate = useNavigate();
 
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(
-    ({ characterInfo }) => characterInfo.isLoading
-  );
-  const character = useAppSelector(
-    ({ characterInfo }) => characterInfo.character
-  );
-  const notFound = useAppSelector(
-    ({ characterInfo }) => characterInfo.notFound
+  const isLoading = useCharacterInfoStore((state) => state.isLoading);
+  const character = useCharacterInfoStore((state) => state.character);
+  const notFound = useCharacterInfoStore((state) => state.notFound);
+  const getCharacter = useCharacterInfoStore((state) => state.getCharacter);
+  const abortGetCharacter = useCharacterInfoStore(
+    (state) => state.abortGetCharacter
   );
 
   const { cid } = useParams();
@@ -34,9 +30,9 @@ export const CharacterInfo = () => {
       return;
     }
 
-    const promise = dispatch(getCharacter(characterId));
-    return () => promise.abort();
-  }, [dispatch, notFound, characterId, openNotFound]);
+    getCharacter(characterId);
+    return () => abortGetCharacter();
+  }, [notFound, characterId, openNotFound, getCharacter, abortGetCharacter]);
 
   return (
     <div className='side-bars'>
