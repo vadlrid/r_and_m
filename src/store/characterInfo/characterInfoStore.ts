@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 import { HttpStatusCode } from 'axios';
-import { CHARACTERS_API, isAbortError } from '@shared/api';
+import { CHARACTERS_API_WITH_CACHE, isAbortError } from '@shared/api';
 import type { Character } from '@shared/domain';
+
+const API = CHARACTERS_API_WITH_CACHE;
 
 interface CharacterInfoState {
   character?: Character;
@@ -24,8 +26,6 @@ const initialState: CharacterInfoState = {
   notFound: false
 };
 
-let abortController: AbortController | undefined;
-
 export const useCharacterInfoStore = create<CharacterInfoStore>((set, get) => ({
   ...initialState,
 
@@ -41,10 +41,10 @@ export const useCharacterInfoStore = create<CharacterInfoStore>((set, get) => ({
   },
 
   getCharacter: async (id) => {
-    abortController?.abort();
-
-    const currentController = new AbortController();
-    abortController = currentController;
+    const previousCharacter = get().character;
+    if (previousCharacter) {
+      await API.cancelGetCharacter(previousCharacter.id);
+    }
 
     get().reset();
 
@@ -53,22 +53,14 @@ export const useCharacterInfoStore = create<CharacterInfoStore>((set, get) => ({
     });
 
     try {
-      const character = await CHARACTERS_API.overrideHandleError((error) => {
+      const character = await API.overrideHandleError((error) => {
         if (error.status === HttpStatusCode.NotFound) {
           get().setNotFound();
           return true;
         }
 
         return false;
-      }).getCharacter(id, currentController.signal);
-
-      // Игнорируем отменённый или устаревший запрос
-      if (
-        currentController.signal.aborted ||
-        abortController !== currentController
-      ) {
-        return;
-      }
+      }).getCharacter(id);
 
       if (!character) {
         set({ isLoading: false });
@@ -91,6 +83,9 @@ export const useCharacterInfoStore = create<CharacterInfoStore>((set, get) => ({
   },
 
   abortGetCharacter: () => {
-    abortController?.abort();
+    const previousCharacter = get().character;
+    if (previousCharacter) {
+      API.cancelGetCharacter(previousCharacter.id);
+    }
   }
 }));

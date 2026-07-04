@@ -1,7 +1,9 @@
 import { create } from 'zustand';
 import { HttpStatusCode } from 'axios';
-import { CHARACTERS_API, isAbortError } from '@shared/api';
+import { CHARACTERS_API_WITH_CACHE, isAbortError } from '@shared/api';
 import type { Character, CharacterSearchQuery, PageData } from '@shared/domain';
+
+const API = CHARACTERS_API_WITH_CACHE;
 
 interface CharactersListState {
   query: CharacterSearchQuery;
@@ -46,8 +48,6 @@ const initialState: CharactersListState = {
   isFirstLoad: true
 };
 
-let abortController: AbortController | undefined;
-
 export const useCharactersStore = create<CharactersStore>((set, get) => ({
   ...initialState,
 
@@ -88,11 +88,6 @@ export const useCharactersStore = create<CharactersStore>((set, get) => ({
   },
 
   fetchCharacters: async ({ page, query }) => {
-    abortController?.abort();
-
-    const currentController = new AbortController();
-    abortController = currentController;
-
     set({
       isFirstLoad: false,
       isLoading: true
@@ -100,22 +95,14 @@ export const useCharactersStore = create<CharactersStore>((set, get) => ({
 
     try {
       const payload: PageData<Character> | undefined =
-        await CHARACTERS_API.overrideHandleError((error) => {
+        await API.overrideHandleError((error) => {
           if (error.status === HttpStatusCode.NotFound) {
             get().setNotFound();
             return true;
           }
 
           return false;
-        }).queryCharacters(page, query, currentController.signal);
-
-      // Игнорируем отменённый или устаревший запрос
-      if (
-        currentController.signal.aborted ||
-        abortController !== currentController
-      ) {
-        return;
-      }
+        }).queryCharacters(page, query);
 
       // Отсутствие payload трактуем как отмену/обработанную ошибку
       if (!payload) {
@@ -144,6 +131,9 @@ export const useCharactersStore = create<CharactersStore>((set, get) => ({
   },
 
   changeQuery: async (query) => {
+    const { page: previousPage, query: previousQuery } = get();
+    await API.cancelQueryCharacters(previousPage, previousQuery);
+
     get().reset();
     get().setQuery(query);
 
@@ -154,6 +144,9 @@ export const useCharactersStore = create<CharactersStore>((set, get) => ({
   },
 
   loadMore: async () => {
+    const { page: previousPage, query: previousQuery } = get();
+    await API.cancelQueryCharacters(previousPage, previousQuery);
+
     const { page, query } = get();
     const nextPage = page + 1;
 
