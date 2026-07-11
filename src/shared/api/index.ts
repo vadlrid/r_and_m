@@ -3,4 +3,3 @@ export * from './characterApi';
 export { convertCharacter, getErrorMessage } from './apiCommon';
 export * from './apiCommon';
 export * from './queryClient';
-export * from './characterApiCache';

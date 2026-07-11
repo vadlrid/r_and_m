@@ -9,22 +9,7 @@ import { convertCharacter, getErrorMessage } from './apiCommon';
 import { API_BASE_URL, REQUEST_ATTEMPTS } from './characterApiConfig';
 import { type DoRequestProps, HTTP_METHOD, doRequest } from './doRequest';
 
-export interface CharactersApi {
-  overrideHandleError(
-    handleError: (error: AxiosError) => boolean
-  ): CharactersApi;
-  getCharacter(
-    id: number,
-    signal?: AbortSignal
-  ): Promise<Character | undefined>;
-  queryCharacters(
-    page: number,
-    query: CharacterSearchQuery,
-    signal?: AbortSignal
-  ): Promise<PageData<Character> | undefined>;
-}
-
-class CharactersApiImpl implements CharactersApi {
+class CharactersApi {
   constructor(
     private baseUrl: string,
     private maxAttempts: number
@@ -99,7 +84,4 @@ class CharactersApiImpl implements CharactersApi {
   }
 }
 
-export const CHARACTERS_API = new CharactersApiImpl(
-  API_BASE_URL,
-  REQUEST_ATTEMPTS
-);
+export const CHARACTERS_API = new CharactersApi(API_BASE_URL, REQUEST_ATTEMPTS);

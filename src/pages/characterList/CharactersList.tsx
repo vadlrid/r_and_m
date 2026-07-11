@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { Indicator } from '@components/indicator';
 import { ScrollContainer } from '@components/scrollContainer';
 import { CharacterCard } from '@widgets/characterCard';
 import { CharacterFilter } from '@widgets/characterFilter';
 import type { Character } from '@shared/domain';
+import { useQueryCharacters } from '@shared/queries';
 import { Size } from '@shared/types';
 import { useCharactersStore } from '@store/characters';
 import './CharactersList.scss';
@@ -13,42 +15,40 @@ export const CharactersList = () => {
   const navigate = useNavigate();
 
   const scrollTop = useCharactersStore((state) => state.scrollTop);
-  const query = useCharactersStore((state) => state.query);
-  const list = useCharactersStore((state) => state.list);
-  const isLoading = useCharactersStore((state) => state.isLoading);
-  const canNext = useCharactersStore((state) => state.canNext);
-  const isSuccess = useCharactersStore((state) => state.isSuccess);
-  const notFound = useCharactersStore((state) => state.notFound);
-  const isFirstLoad = useCharactersStore((state) => state.isFirstLoad);
+  const searchQuery = useCharactersStore((state) => state.query);
+
+  const listQuery = useQueryCharacters(searchQuery);
+
+  const list = !listQuery.isError ? listQuery.data : [];
+  const isLoading = listQuery.isPending || listQuery.isFetchingNextPage;
+  const canNext = listQuery.hasNextPage;
+  const isSuccess = !listQuery.isError && !!listQuery.data;
+
+  const isNotFound =
+    listQuery.isError &&
+    listQuery.error instanceof AxiosError &&
+    listQuery.error.status === HttpStatusCode.NotFound;
 
   const handleOpen = (character: Character) =>
     navigate(`/info/${character.id}`);
-  const handleChange = useCharactersStore((state) => state.updateCharacter);
+
   const handleScrollTopChange = useCharactersStore(
     (state) => state.setScrollTop
   );
-  const loadMore = useCharactersStore((state) => state.loadMore);
-  const changeQuery = useCharactersStore((state) => state.changeQuery);
+  const changeQuery = useCharactersStore((state) => state.setQuery);
 
   const handleBottomReach = () => {
     if (isLoading || !canNext || !isSuccess) {
       return;
     }
-    loadMore();
+    listQuery.fetchNextPage();
   };
 
-  // Вызов первой загрузки
   useEffect(() => {
-    if (isFirstLoad) {
-      changeQuery({});
-    }
-  }, [changeQuery, isFirstLoad]);
-
-  useEffect(() => {
-    if (notFound) {
+    if (isNotFound) {
       navigate('/404');
     }
-  }, [notFound, navigate]);
+  }, [isNotFound, navigate]);
 
   return (
     <ScrollContainer
@@ -61,7 +61,7 @@ export const CharactersList = () => {
       <div className='list'>
         <CharacterFilter
           className='list__filter'
-          query={query}
+          query={searchQuery}
           onQueryChange={changeQuery}
         />
         {!list?.length && isLoading ? (
@@ -78,7 +78,7 @@ export const CharactersList = () => {
                 className='list__item'
                 data={character}
                 onOpen={handleOpen}
-                onChange={handleChange}
+                onChange={listQuery.updateItemInCache}
               />
             ))}
             {isLoading && (

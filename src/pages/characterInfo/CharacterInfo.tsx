@@ -1,38 +1,38 @@
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { isNaN } from 'formik';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { ArrowBack } from '@components/icons';
 import { Indicator } from '@components/indicator';
-import { useCharacterInfoStore } from '@store/characterInfo';
+import { useCharacterInfo } from '@shared/queries';
 import './CharacterInfo.scss';
 import { CharacterInfoField } from './CharacterInfoField';
 
 export const CharacterInfo = () => {
   const navigate = useNavigate();
 
-  const isLoading = useCharacterInfoStore((state) => state.isLoading);
-  const character = useCharacterInfoStore((state) => state.character);
-  const notFound = useCharacterInfoStore((state) => state.notFound);
-  const getCharacter = useCharacterInfoStore((state) => state.getCharacter);
-  const abortGetCharacter = useCharacterInfoStore(
-    (state) => state.abortGetCharacter
-  );
-
   const { cid } = useParams();
-  const characterId = Number(cid);
+  let characterId = Number(cid);
+  characterId = isNaN(characterId) ? -1 : characterId;
+
+  const characterQuery = useCharacterInfo(characterId);
+
+  const character = characterQuery.isError ? undefined : characterQuery.data;
+
+  const isNotFound =
+    characterQuery.isError &&
+    characterQuery.error instanceof AxiosError &&
+    characterQuery.error.status === HttpStatusCode.NotFound;
 
   const openNotFound = useCallback(() => {
     navigate('/404');
   }, [navigate]);
 
   useEffect(() => {
-    if (isNaN(characterId) || notFound) {
+    if (isNotFound) {
       openNotFound();
-      return;
     }
-
-    getCharacter(characterId);
-    return () => abortGetCharacter();
-  }, [notFound, characterId, openNotFound, getCharacter, abortGetCharacter]);
+  }, [isNotFound, openNotFound]);
 
   return (
     <div className='side-bars'>
@@ -41,7 +41,7 @@ export const CharacterInfo = () => {
           <ArrowBack />
           <h3>GO BACK</h3>
         </button>
-        {isLoading && (
+        {characterQuery.isPending && (
           <div className='character-info__progress'>
             <Indicator title='Loading character card...' />
           </div>
