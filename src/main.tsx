@@ -1,11 +1,11 @@
 import '@fontsource/karla/index.css';
 import '@fontsource/roboto/index.css';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { ErrorBoundary } from '@components/errorBoundary';
-import { store } from '@store/root';
+import { queryClient } from '@shared/api';
 import { App } from './App.tsx';
 import { CharacterInfo } from './pages/characterInfo';
 import { CharactersList } from './pages/characterList';
@@ -23,12 +23,12 @@ if (redirect) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ErrorBoundary
-      FallbackComponent={() => (
-        <h1 className='global-error'>Oops! Something goes wrong...</h1>
-      )}
-    >
-      <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+      <ErrorBoundary
+        FallbackComponent={() => (
+          <h1 className='global-error'>Oops! Something goes wrong...</h1>
+        )}
+      >
         <BrowserRouter basename={APP_BASE_URL}>
           <Routes>
             <Route path='/' element={<App />}>
@@ -38,7 +38,7 @@ createRoot(document.getElementById('root')!).render(
             </Route>
           </Routes>
         </BrowserRouter>
-      </Provider>
-    </ErrorBoundary>
+      </ErrorBoundary>
+    </QueryClientProvider>
   </StrictMode>
 );

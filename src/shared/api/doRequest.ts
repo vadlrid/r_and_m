@@ -75,9 +75,8 @@ export const doRequest = async <T, R, E>({
         !!err.status &&
         DONT_RETRY_FOR.has(err.status)
       ) {
-        if (handleError(err)) {
-          throw err;
-        }
+        handleError(err);
+        throw err;
       }
 
       currentAttempts++;
