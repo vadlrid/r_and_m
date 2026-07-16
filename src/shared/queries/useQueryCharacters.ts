@@ -26,8 +26,7 @@ export const useQueryCharacters = (searchQuery: CharacterSearchQuery) => {
       const page = Number(url.searchParams.get('page'));
       return isNaN(page) ? undefined : page;
     },
-    enabled: true,
-    staleTime: 30_000
+    enabled: true
   });
 
   const itemIndex = useMemo(() => {

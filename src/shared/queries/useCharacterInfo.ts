@@ -6,8 +6,7 @@ export const useCharacterInfo = (characterId: number) => {
   const { data, isPending, isError, error } = useQuery({
     queryKey: QUERY_KEYS.getCharacter(characterId),
     queryFn: () => CHARACTERS_API.getCharacter(characterId),
-    enabled: true,
-    staleTime: 30_000
+    enabled: true
   });
 
   return {
