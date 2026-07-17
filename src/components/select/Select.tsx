@@ -79,6 +79,7 @@ export const Select = <T extends string | number>({
 
   return (
     <div
+      data-testid='select-container'
       ref={selectContainerRef}
       className={classNames(externalClassName, 'select', {
         select_opened: isOpen,
@@ -86,11 +87,15 @@ export const Select = <T extends string | number>({
         select_invalid: isInvalid
       })}
     >
-      <div className='select__selection' onClick={toggleOpen}>
+      <div
+        data-testid='selection'
+        className='select__selection'
+        onClick={toggleOpen}
+      >
         {selectedOption ? (
           <OptionComponent data={selectedOption} />
         ) : (
-          <div>{placeholder}</div>
+          <div data-testid='test-placeholder'>{placeholder}</div>
         )}
         <Caret
           className={classNames('select__selection__caret', {
