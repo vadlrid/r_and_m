@@ -38,19 +38,19 @@ describe('Characters list', () => {
     cy.wait('@getCharacters').its('response.statusCode').should('eq', 200);
 
     const response: ListResponse = this.characters;
-    const count = response.info.count as number;
-    cy.get('.list__content').find('.list__item').should('have.length', count);
+    cy.get('.list__content')
+      .find('.list__item')
+      .should('have.length', response.results.length);
   });
 
   it('Check characters names', function () {
     cy.wait('@getCharacters').its('response.statusCode').should('eq', 200);
 
     const response: ListResponse = this.characters;
-    const count = response.info.count as number;
     const characters = response.results;
 
     const cards = cy.get('.list__content').find('.character-card');
-    cards.should('have.length', count);
+    cards.should('have.length', characters.length);
 
     cards.each((item, index) => {
       const { name } = characters[index];
@@ -66,7 +66,7 @@ describe('Characters list', () => {
     let response: ListResponse = this.characters;
     cy.get('.list__content')
       .find('.list__item')
-      .should('have.length', response.info.count);
+      .should('have.length', response.results.length);
 
     const field = cy.get(
       '.list__filter.character-filter .input-field:nth-child(1)'
@@ -81,6 +81,6 @@ describe('Characters list', () => {
     response = this.charactersFiltered;
     cy.get('.list__content')
       .find('.list__item')
-      .should('have.length', response.info.count);
+      .should('have.length', response.results.length);
   });
 });
