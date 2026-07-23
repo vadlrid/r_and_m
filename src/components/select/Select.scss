@@ -17,7 +17,7 @@
 
   & > #{$main}__selection {
     color: var(--color-text-inactive);
-    background: var(--color-white);
+    background: var(--color-background);
     border: 0.1rem solid var(--color-border);
     border-radius: var(--select-border-radius);
     display: flex;
@@ -53,7 +53,7 @@
 
   & > #{$main}__options {
     color: var(--color-text-inactive);
-    background: var(--color-white);
+    background: var(--color-background);
     border: 0.1rem solid var(--color-border);
     border-radius: var(--select-border-radius);
     position: absolute;

@@ -1,10 +1,13 @@
-#root {
+#root > .app {
+  background: var(--color-alt-background);
+
   & > main {
     width: auto;
     min-height: calc(100vh - 13rem);
     padding-bottom: 1rem;
     display: flex;
     flex-direction: column;
+    background: var(--color-background);
   }
 
   & > nav,
@@ -14,21 +17,27 @@
   }
 
   & > nav {
+    background: var(--color-alt-background);
     display: flex;
     align-items: center;
     position: relative;
+    justify-content: space-between;
     z-index: 2;
 
-    svg {
+    & > svg {
       width: 4.8rem;
       height: 5rem;
     }
   }
 
   & > footer {
+    background: var(--color-alt-background);
     display: flex;
     justify-content: center;
     align-items: center;
+    h3 {
+      color: var(--color-title);
+    }
   }
 
   .toast {
