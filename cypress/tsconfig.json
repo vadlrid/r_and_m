@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "esnext",
+    "types": ["cypress", "node"],
+    "paths": {
+      "@shared/domain": ["../src/shared/domain"]
+    }
+  },
+  "include": ["**/*.ts"]
+}
