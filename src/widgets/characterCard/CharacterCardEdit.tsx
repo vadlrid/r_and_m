@@ -2,7 +2,13 @@ import { FormikProvider } from 'formik';
 import { FormInputField } from '@components/inputField';
 import { FormSelect, type SelectOptionProps } from '@components/select';
 import { StatusCircle } from '@components/statusCircle';
-import { LIST_GENDER, LIST_SPECIES, LIST_STATUS, Status } from '@shared/domain';
+import { Status } from '@shared/domain';
+import {
+  useCharacterLabels,
+  useListGender,
+  useListSpecies,
+  useListStatus
+} from '@shared/hooks';
 import { Size } from '@shared/types';
 import type { CharacterForm } from './CharacterForm';
 
@@ -20,29 +26,36 @@ interface CharacterCardEditProps {
 }
 
 export const CharacterCardEdit = ({ form }: CharacterCardEditProps) => {
+  const { lblGender, lblSpecies, lblLocation, lblStatus } =
+    useCharacterLabels();
+
+  const listGender = useListGender();
+  const listSpecies = useListSpecies();
+  const listStatus = useListStatus();
+
   return (
     <FormikProvider value={form}>
       <FormInputField className='character-card__title' formFieldName='name' />
       <div className='field-group'>
-        <label>Gender</label>
+        <label>{lblGender}</label>
         <FormSelect
           className='field-group__form-control'
           size={Size.SMALL}
           formFieldName='gender'
-          items={LIST_GENDER}
+          items={listGender}
         />
       </div>
       <div className='field-group'>
-        <label>Species</label>
+        <label>{lblSpecies}</label>
         <FormSelect
           className='field-group__form-control'
           size={Size.SMALL}
           formFieldName='species'
-          items={LIST_SPECIES}
+          items={listSpecies}
         />
       </div>
       <div className='field-group'>
-        <label>Location</label>
+        <label>{lblLocation}</label>
         <FormInputField
           className='field-group__form-control'
           size={Size.SMALL}
@@ -50,12 +63,12 @@ export const CharacterCardEdit = ({ form }: CharacterCardEditProps) => {
         />
       </div>
       <div className='field-group'>
-        <label>Status</label>
+        <label>{lblStatus}</label>
         <FormSelect
           className='field-group__form-control'
           size={Size.SMALL}
           formFieldName='status'
-          items={LIST_STATUS}
+          items={listStatus}
           OptionComponent={StatusOption}
         />
       </div>

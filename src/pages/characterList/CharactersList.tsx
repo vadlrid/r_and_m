@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { AxiosError, HttpStatusCode } from 'axios';
 import { Indicator } from '@components/indicator';
@@ -13,6 +14,7 @@ import './CharactersList.scss';
 
 export const CharactersList = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const scrollTop = useCharactersStore((state) => state.scrollTop);
   const searchQuery = useCharactersStore((state) => state.query);
@@ -68,7 +70,7 @@ export const CharactersList = () => {
           <Indicator
             className='list__indicator'
             size={Size.LARGE}
-            title='Loading characters...'
+            title={t('list.progress', 'Loading characters...')}
           />
         ) : (
           <section className='list__content'>

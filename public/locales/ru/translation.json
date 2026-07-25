@@ -1,0 +1,52 @@
+{
+  "character": {
+    "gender": "Пол",
+    "location": "Местоположение",
+    "origin": "Происхождение",
+    "species": "Вид",
+    "status": "Статус",
+    "type": "Тип"
+  },
+  "characterInfo": {
+    "back": "НАЗАД",
+    "imgAlt": "Изображение персонажа",
+    "progress": "Загрузка данных персонажа",
+    "subtitle": "Информация",
+    "unknown": "Неизвестно"
+  },
+  "common": {
+    "globalError": "Упс! Наверное что-то случилось...",
+    "goMain": "На главную",
+    "madeBy": "Сделано с любовью - {{author}}"
+  },
+  "filter": {
+    "gender": "Пол",
+    "name": "Фильтр по имени...",
+    "species": "Вид",
+    "status": "Статус"
+  },
+  "gender": {
+    "female": "Женщина",
+    "genderless": "Без пола",
+    "male": "Мужчина",
+    "unknown": "Неизвестно"
+  },
+  "list": {
+    "progress": ""
+  },
+  "species": {
+    "alien": "Чужой",
+    "animal": "Животное",
+    "cronenberg": "Кроненберг",
+    "disease": "Болезнь",
+    "human": "Человек",
+    "humanoid": "Гуманоид",
+    "robot": "Робот",
+    "unknown": "Неизвестно"
+  },
+  "status": {
+    "alive": "Жив",
+    "dead": "Мёртв",
+    "unknown": "Неизвестно"
+  }
+}

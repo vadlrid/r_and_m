@@ -1,0 +1,34 @@
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { Language } from '@shared/types';
+
+interface OptionsState {
+  isDarkMode: boolean;
+  language: Language;
+}
+
+interface OptionsActions {
+  toggleDarkMode(): void;
+  switchLanguage(language: Language): void;
+}
+
+type OptionsStore = OptionsState & OptionsActions;
+
+export const useOptionsStore = create<OptionsStore>()(
+  persist(
+    (set) => ({
+      isDarkMode: false,
+      language: Language.EN,
+      toggleDarkMode: () => {
+        set((state) => ({ isDarkMode: !state.isDarkMode }));
+      },
+      switchLanguage: (language: Language) => {
+        set({ language });
+      }
+    }),
+    {
+      name: 'options-store',
+      partialize: ({ isDarkMode, language }) => ({ isDarkMode, language })
+    }
+  )
+);

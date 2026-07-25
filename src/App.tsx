@@ -1,21 +1,20 @@
-import { useContext } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router';
 import { Logo } from '@components/icons';
 import { OptionsBar } from '@components/optionsBar';
-import { ThemeContext } from '@components/themeProvider';
 import { classNames } from '@shared/utils';
+import { useOptionsStore } from '@store/options';
 import './App.scss';
 
 const AUTHOR = 'dvladir';
 
 export const App = () => {
-  const themeContext = useContext(ThemeContext);
+  const { t } = useTranslation();
+  const isDarkMode = useOptionsStore((state) => state.isDarkMode);
 
   return (
-    <section
-      className={classNames('app', { 'dark-mode': themeContext?.isDarkMode })}
-    >
+    <section className={classNames('app', { 'dark-mode': isDarkMode })}>
       <nav className='shadow side-bars'>
         <Logo />
         <OptionsBar />
@@ -24,7 +23,12 @@ export const App = () => {
         <Outlet />
       </main>
       <footer className='shadow'>
-        <h3>Made with love by {AUTHOR}</h3>
+        <h3>
+          {t('common.madeBy', {
+            author: AUTHOR,
+            defaultValue: 'Made with love by {{author}}'
+          })}
+        </h3>
       </footer>
       <Toaster
         toastOptions={{ className: 'toast' }}
