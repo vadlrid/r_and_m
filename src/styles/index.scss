@@ -4,17 +4,14 @@
 :root {
   --color-border: #393939;
   --color-text-inactive: rgb(0 0 0 / 60%);
-  --color-white: #fff;
+  --color-alt-background: #fff;
+  --color-background: #fff;
   --color-highlight: #d0f5ff;
   --color-selection: #d0efff;
   --color-input-field-underline: #000;
   --color-input-text: #000;
   --color-input-field-border: rgb(0 0 0 / 50%);
   --color-shadow: rgb(0 0 0 / 40%);
-  --color-status-green: #12b800;
-  --color-error: #f00;
-  --color-status-red: #df0000;
-  --color-status-orange: #f90;
   --color-text: #3f3f3f;
   --color-info-text: #6e798c;
   --color-title: rgb(0 0 0 / 87%);
@@ -22,6 +19,34 @@
   --color-img-border: #f2f2f7;
   --color-divider: rgb(33 33 33 / 8%);
   --color-btn-border: rgb(0 0 0 / 38%);
+  --color-status-green: #12b800;
+  --color-error: #f00;
+  --color-status-red: #df0000;
+  --color-status-orange: #f90;
+}
+
+.dark-mode {
+  --color-border: #fff;
+  --color-text-inactive: #cacaca;
+  --color-alt-background: #000;
+  --color-background: #333;
+  --color-highlight: #000;
+  --color-selection: #000;
+  --color-input-field-underline: #fff;
+  --color-input-text: #fff;
+  --color-input-field-border: #cacaca;
+  --color-shadow: rgb(0 0 0 / 40%);
+  --color-text: #fff;
+  --color-info-text: #cacaca;
+  --color-title: #fff;
+  --color-subtitle: #8e8e93;
+  --color-img-border: #f2f2f7;
+  --color-divider: rgb(33 33 33 / 8%);
+  --color-btn-border: rgb(0 0 0 / 38%);
+
+  svg {
+    color: #fff;
+  }
 }
 
 html {
@@ -50,8 +75,13 @@ h3 {
 }
 
 .side-bars {
-  padding-left: 19.8rem;
-  padding-right: 19.8rem;
+  $size: 103rem;
+  $offset: 1.6rem;
+  $padding: calc((100vw - $size - $offset) / 2);
+
+  padding-left: $padding;
+  padding-right: $padding;
+  width: $size !important;
 }
 
 @include s.media-queries;

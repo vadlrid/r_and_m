@@ -16,8 +16,9 @@
   .btn-main {
     width: 24rem;
     height: 5.6rem;
-    background: var(--color-white);
+    background: var(--color-background);
     border: solid 0.1rem var(--color-btn-border);
+    color: var(--color-title);
     border-radius: 0.8rem;
     font-family: Karla, serif;
     font-size: 1.8rem;
