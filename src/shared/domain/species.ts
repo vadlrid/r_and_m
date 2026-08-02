@@ -1,5 +1,3 @@
-import { capitalize, convertToKeyValueArray } from '../utils';
-
 export enum Species {
   HUMAN = 'Human',
   ALIEN = 'Alien',
@@ -12,8 +10,3 @@ export enum Species {
 }
 
 export const ALL_SPECIES_VALUES = Object.values(Species);
-
-export const LIST_SPECIES = convertToKeyValueArray(
-  ALL_SPECIES_VALUES,
-  capitalize
-);

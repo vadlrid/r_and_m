@@ -1,13 +1,10 @@
 import { useCallback, useMemo, useState, useTransition } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search } from '@components/icons';
 import { InputField } from '@components/inputField';
 import { Select } from '@components/select';
-import {
-  type CharacterSearchQuery,
-  LIST_GENDER,
-  LIST_SPECIES,
-  LIST_STATUS
-} from '@shared/domain';
+import { type CharacterSearchQuery } from '@shared/domain';
+import { useListGender, useListSpecies, useListStatus } from '@shared/hooks';
 import { Size } from '@shared/types';
 import { classNames, debounce } from '@shared/utils';
 
@@ -45,6 +42,12 @@ export const CharacterFilter = ({
   query = {},
   onQueryChange
 }: CharacterFilterProps) => {
+  const { t } = useTranslation();
+
+  const listGender = useListGender();
+  const listSpecies = useListSpecies();
+  const listStatus = useListStatus();
+
   const handleQueryChange = useCallback(
     (updatedQuery: CharacterSearchQuery) => {
       const newQuery: CharacterSearchQuery = { ...query, ...updatedQuery };
@@ -75,30 +78,30 @@ export const CharacterFilter = ({
         size={Size.LARGE}
         hasBorder
         Prefix={Search}
-        placeholder='Filter by name...'
+        placeholder={t('filter.name', 'Filter by name...')}
         value={name}
         onChange={handleNameChange}
       />
       <Select
         size={Size.LARGE}
-        placeholder='Species'
-        items={LIST_SPECIES}
+        placeholder={t('filter.species', 'Species')}
+        items={listSpecies}
         selectedItem={query.species}
         onChange={(species) => handleQueryChange({ species })}
         hasEmptyOption
       />
       <Select
         size={Size.LARGE}
-        placeholder='Gender'
-        items={LIST_GENDER}
+        placeholder={t('filter.gender', 'Gender')}
+        items={listGender}
         selectedItem={query.gender}
         onChange={(gender) => handleQueryChange({ gender })}
         hasEmptyOption
       />
       <Select
         size={Size.LARGE}
-        placeholder='Status'
-        items={LIST_STATUS}
+        placeholder={t('filter.status', 'Status')}
+        items={listStatus}
         selectedItem={query.status}
         onChange={(status) => handleQueryChange({ status })}
         hasEmptyOption

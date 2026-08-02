@@ -17,6 +17,7 @@
     "formik",
     "yup",
     "axios",
+    "react-i18next",
     "^@components/(.*)$",
     "^@widgets/(.*)$",
     "^@shared/(.*)$",

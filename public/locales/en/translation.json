@@ -1,0 +1,52 @@
+{
+  "character": {
+    "gender": "Gender",
+    "location": "Location",
+    "origin": "Origin",
+    "species": "Species",
+    "status": "Status",
+    "type": "Type"
+  },
+  "characterInfo": {
+    "back": "Go Back",
+    "imgAlt": "Character's image",
+    "progress": "Loading character card...",
+    "subtitle": "Information",
+    "unknown": "Unknown"
+  },
+  "common": {
+    "globalError": "Oops! Something goes wrong...",
+    "goMain": "Go to main page",
+    "madeBy": "Made with love by {{author}}"
+  },
+  "filter": {
+    "gender": "Gender",
+    "name": "Filter by name...",
+    "species": "Species",
+    "status": "Status"
+  },
+  "gender": {
+    "female": "Female",
+    "genderless": "Genderless",
+    "male": "Male",
+    "unknown": "Unknown"
+  },
+  "list": {
+    "progress": "Loading characters..."
+  },
+  "species": {
+    "alien": "Alien",
+    "animal": "Animal",
+    "cronenberg": "Cronenberg",
+    "disease": "Disease",
+    "human": "Human",
+    "humanoid": "Humanoid",
+    "robot": "Robot",
+    "unknown": "Unknown"
+  },
+  "status": {
+    "alive": "Alive",
+    "dead": "Dead",
+    "unknown": "Unknown"
+  }
+}

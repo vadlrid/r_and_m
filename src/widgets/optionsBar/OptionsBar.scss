@@ -1,4 +1,7 @@
 .options-bar {
+  display: flex;
+  gap: 1rem;
+
   button {
     width: 3.8rem;
     height: 3.8rem;
@@ -11,7 +14,12 @@
 
     border: solid 0.1rem var(--color-border);
     background: var(--color-background);
+    color: var(--color-text-inactive);
     border-radius: 1rem;
+
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 2.1;
 
     & > svg {
       width: 3rem;
