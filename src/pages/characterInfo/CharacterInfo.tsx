@@ -45,7 +45,7 @@ export const CharacterInfo = () => {
       <div className='character-info'>
         <button type='button' className='back' onClick={() => navigate(-1)}>
           <ArrowBack />
-          <h3>{t('characterInfo.back', 'GO BACK')}</h3>
+          <h3>{t('characterInfo.back', 'Go Back').toUpperCase()}</h3>
         </button>
         {characterQuery.isPending && (
           <div className='character-info__progress'>

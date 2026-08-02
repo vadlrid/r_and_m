@@ -2,17 +2,12 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Language } from '@shared/types';
 
-interface OptionsState {
+interface OptionsStore {
   isDarkMode: boolean;
   language: Language;
-}
-
-interface OptionsActions {
   toggleDarkMode(): void;
   switchLanguage(language: Language): void;
 }
-
-type OptionsStore = OptionsState & OptionsActions;
 
 export const useOptionsStore = create<OptionsStore>()(
   persist(

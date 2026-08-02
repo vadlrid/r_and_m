@@ -2,7 +2,7 @@ import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router';
 import { Logo } from '@components/icons';
-import { OptionsBar } from '@components/optionsBar';
+import { OptionsBar } from '@widgets/optionsBar';
 import { classNames } from '@shared/utils';
 import { useOptionsStore } from '@store/options';
 import './App.scss';
