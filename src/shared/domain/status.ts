@@ -1,11 +1,6 @@
 export enum Status {
-  // t('status.alive', 'Alive')
   ALIVE = 'Alive',
-
-  // t('status.dead', 'Dead')
   DEAD = 'Dead',
-
-  // t('status.unknown', 'unknown')
   UNKNOWN = 'unknown'
 }
 
